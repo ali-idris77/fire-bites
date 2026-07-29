@@ -5,7 +5,9 @@ import {BiLogoTwitter, BiLogoInstagram,
     BiUserCheck,
     BiShield,
     BiFile,
-    BiMenu} from 'react-icons/bi'
+    BiMenu,
+    BiSlider,
+    BiSliderAlt} from 'react-icons/bi'
 import {HiUserGroup, HiUser, HiUsers} from 'react-icons/hi'
 
 const useIcons = () => {
@@ -25,7 +27,8 @@ const useIcons = () => {
         staff:HiUsers,
         guard:BiShield,
         legal:BiFile,
-        menu:BiMenu 
+        menu:BiMenu,
+        slider:BiSliderAlt 
     }
     return icons;
 }

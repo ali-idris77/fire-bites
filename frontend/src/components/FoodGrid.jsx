@@ -7,11 +7,13 @@ import useAuthContext from '../hooks/useAuthContext'
 import useOrderContext from '../hooks/useOrderContext'
 import Swal from 'sweetalert2'
 import useAuthSwal from '../hooks/useAuthSwal'
+import CardSkeleton from './loader/CardSkeleton'
 
 export default function FoodGrid({foods, loading, item}) {
   const [adding, setAdding] = useState(null)
+  const [orderingId, setOrderingId] = useState(null)
     const {dispatch} = useCartContext()
-    const { o_dispatch} = useOrderContext()
+    const {dispatch: o_dispatch} = useOrderContext()
     const {user} = useAuthContext()
     const navigate = useNavigate()
     
@@ -96,33 +98,66 @@ export default function FoodGrid({foods, loading, item}) {
     }
 
     const order = async(f)=>{
-      let customerEmail
-      let customerPhone
-      if(!user){
-        const {email, phone} = useAuthSwal()
-        customerEmail = email
-        customerPhone = phone
-      }else{
-        customerEmail = user.email
-        customerPhone = user.user
-      }
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/checkout`,{
-        method:'POST',
-        body:JSON.stringify({
-          customerEmail, customerPhone, amount:f?.discountPrice || f.price,
-          items:[{dishId:f._id, quantity:1} ]
-        })
-      })
-    }
+      if(!f) return
+      setOrderingId(f._id)
+      try{
+        let customerEmail
+        let customerPhone
+        if(!user){
+          const authData = await useAuthSwal()
+          if(!authData?.value){
+            setOrderingId(null)
+            return
+          }
+          customerEmail = authData.value.email
+          customerPhone = authData.value.phone
+        }else{
+          customerEmail = user.email
+          customerPhone = user.user
+        }
 
-    if(loading){
-        return (
-            <div>loading....</div>
-        )
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/checkout`,{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({
+            customerEmail,
+            customerPhone,
+            amount: Number(f?.discountPrice || f.price),
+            items:[{dishId:f._id, quantity:1}]
+          })
+        })
+
+        const data = await res.json()
+        if(res.ok && data.authorization_url){
+          window.location.assign(data.authorization_url)
+        }else{
+          Swal.fire({
+            icon:'error',
+            title:'Checkout failed',
+            text:data.message || 'Unable to start checkout right now.'
+          })
+        }
+      }catch(err){
+        console.log(err)
+        Swal.fire({
+          icon:'error',
+          title:'Checkout failed',
+          text:'Please try again in a moment.'
+        })
+      }finally{
+        setOrderingId(null)
+      }
     }
 
   return (<>
-    {foods && foods.map(f => {
+    {
+    loading ?
+    Array.from({length:6}).map((_, i)=>{
+      return (
+        <CardSkeleton key={i}/>
+      )
+    })
+    : foods ? foods.map(f => {
                   return (
                     <motion.div variants={item} className="dish-card" key={f._id}>
                 <div className="thumb"><img src={`${import.meta.env.VITE_API_URL}/api/uploads/dishes/${f.image.url}`} alt={`dish thumbnail - ${f.name}`}/> <div className='tags'>
@@ -151,13 +186,14 @@ export default function FoodGrid({foods, loading, item}) {
                   disabled={adding=== f._id}
                   onClick={()=>{
                     addCart(f)
-                  }}> <Icon name='bag' className='bag-btn' /> { adding=== f._id ? 'Adding' :'Add'} to bag</button><button onClick={()=>{
+                  }}> <Icon name='bag' className='bag-btn' /> { adding === f._id ? 'Adding' :'Add'} to bag</button><button disabled={orderingId===f._id} onClick={()=>{
                     order(f)
-                  }}>order</button></div>
+                  }}>{orderingId===f._id ? 'Ordering...' : 'order'}</button></div>
                 </div>
               </motion.div>
                   )
-                })}
+                }) :
+                <h3 className='empty-state'>No dishes available</h3>}
                 </>
   )
 }

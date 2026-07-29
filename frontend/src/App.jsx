@@ -27,6 +27,7 @@ import StaffAuth from './pages/dashboard/StaffAuth'
 import FoodEdit from './pages/dashboard/FoodEdit'
 import DishGrid from './pages/dashboard/DishGrid'
 import UserGrid from './pages/dashboard/UserGrid'
+import PaymentFailed from './pages/PaymentFailed'
 import { useEffect } from 'react'
 import { socket } from './sockets/socket'
 
@@ -44,6 +45,7 @@ const router = createBrowserRouter(
       <Route path='login' element={<Login/>} />
       <Route path='admin/login' element={<AdminLogin/>} />
       <Route path='unauthorized'element={<Unauthorized/>} />
+      <Route path='payment_failed'element={<PaymentFailed/>} />
       <Route path='contact' element={<Contact/>}/>
       <Route path='bag' element={<Protect>
         <Cart/>

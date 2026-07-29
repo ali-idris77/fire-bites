@@ -34,7 +34,7 @@ export default function Notification() {
             <small>{formatDistanceToNow(new Date(n?.createdAt || Date.now()), {addSuffix:true})}</small>
           </div>
           
-        )) : <h3>
+        )) : <h3 className='empty-state'>
             No Unread Notifications Yet.
         </h3>}
     </section>

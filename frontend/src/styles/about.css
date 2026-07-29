@@ -15,5 +15,27 @@
     font-family: quicksand;
 }
 section.abt-s{
-    padding: 2rem 0;
+    padding: 2rem 1rem;
+}
+section.abt-s h2{
+    font-family: quicksand;
+    margin-bottom: 0.75rem;
+}
+section.abt-s p,
+section.abt-s li{
+    line-height: 1.8;
+    color: #4f4f4f;
+}
+.abt-details{
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+.abt-list{
+    margin-top: 0.75rem;
+    padding-left: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
 }

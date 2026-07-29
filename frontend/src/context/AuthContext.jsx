@@ -25,7 +25,7 @@ const AuthContextProvider = ({children}) => {
         useEffect(()=>{
             const verifyToken = async()=>{
                 if(!user) return;
-                const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/verify-auth`,{
+                const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/verify`,{
                    headers:{"Authorization":`Bearer ${user.token}`}
                 })
                 if (res.status === 401){

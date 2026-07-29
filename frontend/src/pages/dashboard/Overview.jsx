@@ -3,6 +3,8 @@ import useAdminAuthContext from "../../hooks/useAdminAuthContext"
 import { socket } from '../../sockets/socket'
 import '../../styles/dashboard.css'
 import Chart from '../../components/Chart'
+import Skeleton from '../../components/Skeleton'
+import ChartSkeleton from '../../components/loader/ChartSkeleton'
 
 export default function Overview() {
   const [ovrData, setOvrData] = useState({})
@@ -52,31 +54,31 @@ export default function Overview() {
       <div className="dash-card d1">
         <h3>Today's Sales</h3>
         <div className="content">
-        {ld ? (<h3>loadin..</h3>): <h2 className="nums">{ovrData?.today?.[0]?.revenue ?? 0}</h2>}
+        {ld ? <Skeleton height="2.5rem" width="40px"/>: <h2 className="nums">{ovrData?.today?.[0]?.revenue ?? 0}</h2>}
         </div>
       </div>
       <div className="dash-card d2">
         <h3>Today's Orders</h3>
         <div className="content">
-        {ld ? (<h3>loadin...</h3>): <h2 className="nums">{ovrData?.order?.[0]?.totalOrder ?? 0}</h2>}
+        {ld ? <Skeleton height="2.5rem" width="40px"/>: <h2 className="nums">{ovrData?.order?.[0]?.totalOrder ?? 0}</h2>}
         </div>
       </div>
       <div className="dash-card d3">
         <h3>Pending Orders</h3>
         <div className="content">
-        {ld ? (<h3>loadin...</h3>): <h2 className="nums">{ovrData?.pend?.[0]?.revenue ?? 0}</h2>}
+        {ld ? <Skeleton height="2.5rem" width="40px"/>: <h2 className="nums">{ovrData?.pend?.[0]?.revenue ?? 0}</h2>}
         </div>
       </div>
       <div className="dash-card d4">
         <h3>Orders By Status</h3>
         <div className="content">
-          {ld ? (<h3>loadin...</h3>) : <Chart type='donut' data={ordChart} xKey="_id" dataKey="total" />}
+          {ld ? <ChartSkeleton type='pie'/> : <Chart type='donut' data={ordChart} xKey="_id" dataKey="total" />}
         </div>
       </div>
       <div className="dash-card d5">
         <h3>Popular Dishes</h3>
         <div className="content">
-          {ld ? (<h3>loadin...</h3>) : <Chart type='bar' data={pop} color="#4c5558" xKey="dish.name" dataKey="totalOrder" />}
+          {ld ? <ChartSkeleton/> : <Chart type='bar' data={pop} color="#4c5558" xKey="dish.name" dataKey="totalOrder" />}
         </div>
       </div>
       <div className="dash-card d6">
@@ -91,7 +93,23 @@ export default function Overview() {
               <th>Date</th>
               <th>Time</th>
             </tr></thead>
-            {resevs?.length > 0 && (
+            {ld ? (
+              <tbody>
+                { Array.from({length:5}).map( (_, i) =>{
+                  return(
+                    <tr key={i}>
+                      <td><Skeleton height='1.5rem'/></td>
+                      <td><Skeleton height='1.5rem'/></td>
+                      <td><Skeleton height='1.5rem'/></td>
+                      <td><Skeleton height='1.5rem'/></td>
+                      <td><Skeleton height='1.5rem'/></td>
+                      <td><Skeleton height='1.5rem'/></td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            ) :
+          resevs?.length > 0 && (
               <tbody>
                 {resevs?.length > 0 && resevs.map( r =>{
                   return(

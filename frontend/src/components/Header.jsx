@@ -15,18 +15,36 @@ export default function Header() {
   const {logout} = useLogout()
   const { nots } = useNotsContext();
   const navigate = useNavigate();
-
+  const [open, setOpen] = useState(false)
+  const tglOpn = ()=>{
+    setOpen(!open)
+  }
   const unreadCount = nots?.filter((n) => !n.isRead).length || 0;
   console.log('nit',nots, unreadCount)
   return (
     <header>
-      <nav>
+      <nav className={open ? 'open' : ''}>
+        <span className="spn">
+          <span onClick={()=>{
+            tglOpn()
+          }}>
+        <Icon name="menu" className="mnubtn"/>
+        </span>
         <Logo/>
-        <ul>
-        <NavLink to='/'>Home</NavLink>
-        <NavLink to='/about'>About</NavLink>
-        <NavLink to='/menu'>Menu</NavLink>
-        <NavLink to='/contact'>Contact</NavLink>
+        </span>
+        <ul className={open ? 'open' : ''}>
+        <NavLink to='/' onClick={()=>{
+            tglOpn()
+          }}>Home</NavLink>
+        <NavLink to='/about' onClick={()=>{
+            tglOpn()
+          }}>About</NavLink>
+        <NavLink to='/menu' onClick={()=>{
+            tglOpn()
+          }}>Menu</NavLink>
+        <NavLink to='/contact' onClick={()=>{
+            tglOpn()
+          }}>Contact</NavLink>
         </ul>
         <div className="socials"> 
           {!admin && <><Link to='/bag'><Icon name="bag" /></Link> </>}

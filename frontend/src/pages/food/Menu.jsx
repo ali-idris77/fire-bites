@@ -11,6 +11,7 @@ export default function Menu() {
   const [search, setSearch] = useState('')
   const [categ, setCateg] = useState('')
   const [tag, setTag] = useState([])
+  const [chosen, setChosen] = useState(null)
   const perPage = 12
 
   const sortedDishes = (dishes || []).slice().sort((a, b) => {
@@ -88,13 +89,11 @@ export default function Menu() {
     </section>
     <div className="ctg">
       {categry.map((c, i)=>{
-        return(<div className='ctgrd' key={i} data-categ={c} onClick={
+        return(<div className={`ctgrd ${chosen === i ? 'active' : ''}`} key={i} data-categ={c} onClick={
           (e)=>{
+            setChosen(i)
             setCateg(e.target.dataset.categ)
-            console.log(e.target.dataset.categ)
-            document.querySelectorAll('ctgrd').forEach(c => c.classList.contains('active') ? c.classList.remove('active') : c.classList)
-            e.target.classList.add('active')
-          }
+            }
         }>
           {c}
         </div>)

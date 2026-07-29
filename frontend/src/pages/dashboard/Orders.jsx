@@ -5,6 +5,7 @@ import Dashload from '../../components/Dashload'
 import useOrderContext from '../../hooks/useOrderContext'
 import useNotify from '../../hooks/useNotify'
 import { socket } from "../../sockets/socket"
+import Skeleton from "../../components/Skeleton"
 
 export default function Orders() {
   const [orders, setOrders] = useState([])
@@ -91,14 +92,22 @@ export default function Orders() {
         </div>       
     </section>
     <section className="ord">
-      {load ? (
-        <h2>loading...</h2>
-      ) : (
+      {load ? Array.from({length: 12}).map((_, i)=>{
+              return(
+                <div className="skelCard">
+              <Skeleton height="1.5rem" width="50%"/>
+              <Skeleton width="25%"/>
+              <Skeleton width="50%"/>
+              <Skeleton width="35%%"/>
+              
+            </div>
+              )
+            }) : (
         <div className="rsvdiv">
           {orders && orders.length > 0 ? orders.map(o =>{
             <div className="" key={o._id}></div>
           }) : (
-            <h2>No orders yeet</h2>
+            <h3 className="empty-state">No orders yeet</h3>
           )}
         </div>
       )}

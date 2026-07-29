@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom'
 import Icon from '../components/Icon'
 import '../styles/home.css'
+import '../styles/responsive.css'
 import {delay, easeOut, motion} from 'framer-motion'
 import useDishContext from '../hooks/useDishContext'
 import { Suspense } from 'react'
 import FoodGrid from '../components/FoodGrid'
+import CardSkeleton from '../components/loader/CardSkeleton'
 
 const container = {
   hidden : {opacity: 0},

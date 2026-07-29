@@ -3,6 +3,17 @@ import useReserveContext from '../hooks/useReserveContext'
 import Swal from 'sweetalert2'
 import useNotify from "../hooks/useNotify"
 
+const locations = [
+  {
+    name: 'Firey Bites Main Branch',
+    address: '12 Luxury Avenue, Lekki Phase 1, Lagos',
+    phone: '+234 800 000 0000',
+    email: 'hello@fireybites.com',
+    hours: 'Mon - Sun • 8:00 AM - 10:00 PM',
+    mapUrl: 'https://www.google.com/maps?q=lekki+phase+1+lagos&output=embed'
+  }
+]
+
 export default function Contact() {
 
   const {dispatch} = useReserveContext()
@@ -53,7 +64,49 @@ export default function Contact() {
 
   return (
     <>
-    <section className="con-hero"></section>
+    <section className="con-hero">
+      <div className="con-hero-content">
+        <p className="eyebrow">Reach out</p>
+        <h1>We’d love to hear from you</h1>
+        <p>Whether you’re planning a cozy dinner, a celebration, or simply want to say hello, we’re here to welcome you.</p>
+      </div>
+    </section>
+
+    <section className="con-social">
+      <h2>Follow <span className="firey">Firey</span> Bites</h2>
+      <p>Stay up to date with our latest dishes, offers, and special events.</p>
+      <div className="social-links">
+        <a href="https://instagram.com" target="_blank" rel="noreferrer">Instagram</a>
+        <a href="https://facebook.com" target="_blank" rel="noreferrer">Facebook</a>
+        <a href="https://x.com" target="_blank" rel="noreferrer">X</a>
+      </div>
+    </section>
+
+    <section className="locator">
+      <h2>Visit <span className="firey">Us</span></h2>
+      <div className="locator-grid">
+        <div className="locator-card">
+          {locations.map((location) => (
+            <div key={location.name} className="location-block">
+              <h3>{location.name}</h3>
+              <p>{location.address}</p>
+              <p>{location.phone}</p>
+              <p>{location.email}</p>
+              <p>{location.hours}</p>
+            </div>
+          ))}
+        </div>
+        <div className="map-card">
+          <iframe
+            title="Firey Bites location"
+            src={locations[0].mapUrl}
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+      </div>
+    </section>
+
     <section className="rserve">
       <h2>Make A Reservation With Us</h2>
       <form onSubmit={(e)=>{
@@ -106,9 +159,6 @@ export default function Contact() {
           {err && <p className="error">{err}</p>}
       </form>
     </section>
-    <section className="contact"></section>
-    <section className="locator"></section>
-    <section className="con-social"></section>
     </>
   )
 }

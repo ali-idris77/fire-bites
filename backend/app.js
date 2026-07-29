@@ -19,6 +19,12 @@ const reserveRoutes = require('./routes/reserveRoutes')
 const orderRoutes = require('./routes/orderRoutes')
 const notificationRoutes = require('./routes/notificationRoutes')
 const dashboardRoutes = require('./routes/dashboardRoutes');
+const checkoutRoutes = require('./routes/checkoutRoutes');
+
+const paymentWebhook = require('./controllers/paymentWebhook')
+const paymentCallback = require('./controllers/paymentCallback')
+
+
 //middlewares
 app.use(cors({
      origin: process.env.FRONTEND_URL,
@@ -35,7 +41,7 @@ app.use('/api/reserve', reserveRoutes);
 app.use('/api/order', orderRoutes)
 app.use('/api/nots', notificationRoutes)
 app.use('/api/dash', dashboardRoutes)
-
+app.use('/api/checkout', checkoutRoutes)
 //io init
 initIo(server)
 //start server here
@@ -47,3 +53,11 @@ mongoose.connect(process.env.MONGODB_URI)
 }).catch(err =>{
     console.log(err);
 });
+
+app.post('/webhook/paystack', express.raw({
+        type:'application/json'
+}),
+paymentWebhook
+)
+app.get('/payment/callback', paymentCallback)
+    

@@ -40,7 +40,7 @@ const CartContextProvider = ({children})=>{
     useEffect(()=>{
     const fetchCart = async()=>{
 
-    
+    try{
         const res = await fetch(`${import.meta.env.VITE_API_URL}/api/cart/`,{
             headers:{"Authorization":`Bearer ${user.token}`}
         })
@@ -50,6 +50,10 @@ const CartContextProvider = ({children})=>{
             setCartLoading(false)
         }else{
             console.log(data)
+            setCartLoading(false)
+        }
+    }catch(err){
+            console.log(err)
             setCartLoading(false)
         }
     }

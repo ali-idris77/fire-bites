@@ -56,25 +56,43 @@ export default function About() {
     >
       <motion.h2 variants={item}>Who <span className="firey">Are</span> We</motion.h2>
       <motion.p variants={item}>
-        We at firey bites are a team of well skilled culinery experts brought together by one goal -- serve the best dish to the people --. We take meals quite seriously and always try to ensure that we serve only highly quality meals to our customers. Be it breakfast , lunch or eve dinner every meal is like a king's feast at firey bites. Established in 2026 firey bites aims to dominate the culinary world with cutting edge techniques and passion filled meals. Our chefs have been trained n the most appropriate ways possible from france to japan, all over the world, and as such they have only one thing in mind which is to produce the best meal. So what are you waiting for , dine with us today. 
+        Firey Bites is a warm, modern dining experience built around bold flavors, attentive service, and meals made with heart. Our team brings together passionate chefs, thoughtful hosts, and creative minds who believe every plate should feel memorable. From hearty breakfasts to comforting dinners, we create food that feels both elevated and familiar.
       </motion.p>
       <motion.button className='cta' variants={item}>Place An Order</motion.button>
     </motion.section>
+
     <motion.section className="abt-s loct"
     variants={container}
     initial="hidden"
     whileInView="show"
     viewport={{once:true, amount:0.3}}
     >
-      <motion.h2 variants={item}>Come <span className="firey">Over </span> To <span className="firey"> Our</span> Yard</motion.h2>
+      <motion.h2 variants={item}>Where <span className="firey">To</span> Find Us</motion.h2>
+      <motion.p variants={item}>
+        You can enjoy our signature dishes at our cozy dining space, where comfort meets style. We welcome guests for lunch, dinner, and special occasions, and our team is always ready to make your visit feel personal and relaxing.
+      </motion.p>
+      <motion.div className="abt-details" variants={item}>
+        <p><strong>Location:</strong> 12, Luxury Avenue, Lagos</p>
+        <p><strong>Opening Hours:</strong> Monday to Sunday, 8:00 AM - 10:00 PM</p>
+        <p><strong>Reservations:</strong> Available for brunches, dates, and private gatherings</p>
+      </motion.div>
     </motion.section>
-    <motion.section className="abt-s socials"
+
+    <motion.section className="abt-s"
     variants={container}
     initial="hidden"
     whileInView="show"
     viewport={{once:true, amount:0.3}}
     >
-      <motion.h2 variants={item}>Find Us <span className="firey">Online</span></motion.h2>
+      <motion.h2 variants={item}>Why <span className="firey">Choose</span> Us</motion.h2>
+      <motion.p variants={item}>
+        We are committed to giving every guest something more than a meal. It is the care behind each dish, the consistency of our service, and the joy of sharing a table that keeps people coming back.
+      </motion.p>
+      <motion.ul className="abt-list" variants={item}>
+        <li>Fresh ingredients prepared with creativity and care.</li>
+        <li>Fast, friendly service that puts you first.</li>
+        <li>A welcoming atmosphere made for relaxing and reconnecting.</li>
+      </motion.ul>
     </motion.section>
     </>
   )

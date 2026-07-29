@@ -4,6 +4,7 @@ import {Link, useNavigate} from 'react-router-dom'
 import useAdminAuthContext from "../../hooks/useAdminAuthContext"
 import Swal from "sweetalert2"
 import useToast from "../../hooks/useToast"
+import Skeleton from "../../components/Skeleton"
 
 export default function DishGrid() {
   const categry = ['grills', 'desserts', 'snacks', 'continental', 'pasta', 'noodles','casserole', 'pastry', 'breakfasts', 'combo', 'full-combo', '3-course-meal', 'fast-foods', 'specials', 'drinks', 'sandwiches', 'sides', 'carbs', 'rice-dishes', 'soups', 'proteins','healthy']
@@ -113,7 +114,21 @@ export default function DishGrid() {
       <Link to='/dashboard/dishes/create'><button>Create A Dish</button></Link>
     </div>
     <section className="dishes">
-      {currentDishes && currentDishes.map(dish =>{ return(
+      { dishLoading ? Array.from({length:12}).map((_, i)=>{
+        return (
+          <div className="skelcrd">
+            <div className="thumb">
+              <Skeleton width="100%" height="100%" radius="0" />
+            </div>
+            <div className="dets">
+              <Skeleton height="1.5rem" width="70%"/>
+              <Skeleton height="1.5rem" width="45%"/>
+              <Skeleton height="1.5rem" width="30%"/>
+            </div>
+          </div>
+        )
+      }) : 
+      currentDishes && currentDishes.length > 0 ? currentDishes.map(dish =>{ return(
             <div className="crtdv" key={dish._id}>
                 <div className="crtthumb">
                     <img src={`${import.meta.env.VITE_API_URL}/api/uploads/dishes/${dish.image.url}`} alt="" />
@@ -135,7 +150,7 @@ export default function DishGrid() {
                         }} >delete</button></div>
               </div>
               )
-            })}
+            }) : <h3 className="empty-state">No dishes yet</h3>}
     </section>
     <div className="pagination dsh">
       <button disabled={page <= 1} onClick={()=>{

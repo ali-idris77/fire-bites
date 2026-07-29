@@ -8,46 +8,47 @@ const User = require('../models/customer')
 
 const checkout = async(req, res)=>{
     const {customer, customerEmail, customerPhone, items, amount} = req.body;
-    console.log(body)
+
     try{
-        
-      
-        const amount = body.total
-        const transactionType = body.orderType
+        const orderAmount = Number(amount || 0)
         const reference = crypto.randomUUID()
-        const users = await User.findById(customer)
-        console.log(users)
+
+        const normalizedItems = (items || []).map(item => ({
+            dish: item.dishId || item.dish,
+            quantity: Number(item.quantity || 1)
+        }))
+
         const order = await Order.create({
-            customer,
+            customer: customer || undefined,
             customerEmail,
             customerPhone,
-            items,
-            amount,
+            items: normalizedItems,
+            amount: orderAmount,
             payment:{
                 reference
             }
         })
-        //payment response
+
         const response = await axios.post('https://api.paystack.co/transaction/initialize',{
-        email : users.email,
-        amount : amount * 100,
-        metadata:{
-            orderId: order._id.toString()
+            email: customerEmail || process.env.PAYSTACK_RECEIVER_EMAIL || 'hello@fireybites.com',
+            amount: Math.round(orderAmount * 100),
+            metadata:{
+                orderId: order._id.toString()
+            },
+            reference,
+            callback_url: `${process.env.APP_URL}/payment/callback`
         },
-        reference,
-        callback_url: `${process.env.APP_URL}/payment/callback`
-    },
-    {
-        headers:{
-            Authorization:`Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
-            'Content-Type':'application/json'
+        {
+            headers:{
+                Authorization:`Bearer ${process.env.PAYSTACK_SECRET_KEY}`,
+                'Content-Type':'application/json'
+            }
         }
-    }
-);
-console.log('paystack response: ', response.data.data)
- res.json({
-    authorization_url: response.data.data.authorization_url
- })
+        )
+
+        res.json({
+            authorization_url: response.data.data.authorization_url
+        })
     }catch(err){
         console.log(err.response?.data || err)
         res.status(500).json({

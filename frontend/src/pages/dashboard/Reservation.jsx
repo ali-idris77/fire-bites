@@ -5,6 +5,7 @@ import Swal from 'sweetalert2'
 import Dashload from '../../components/Dashload'
 import { socket } from "../../sockets/socket"
 import useNotify from "../../hooks/useNotify"
+import Skeleton from "../../components/Skeleton"
 export default function Reservation() {
   const [resev, setResev] = useState([])
   const [load, setLoad] = useState(false)
@@ -142,10 +143,20 @@ export default function Reservation() {
         </div>  */}
         </div>       
     </section>
-    <section className="rsv">
-      {load ? (<h3>Loading...</h3>) : (
-        <div className="rsvdiv">
-          {filteredResrvs && filteredResrvs.length>0 ? filteredResrvs.map(r => {
+    <section className="rsv"><div className="rsvdiv">
+
+      {load ? Array.from({length: 12}).map((_, i)=>{
+        return(
+          <div className="skelCard">
+        <Skeleton height="1.5rem" width="50%"/>
+        <Skeleton width="25%"/>
+        <Skeleton width="50%"/>
+        <Skeleton width="35%%"/>
+        
+      </div>
+        )
+      }) : 
+        filteredResrvs && filteredResrvs.length>0 ? filteredResrvs.map(r => {
             return(
               <div className="rsvcard" key={r._id}>
                     <div className="rdtl">
@@ -182,9 +193,8 @@ export default function Reservation() {
                     </div>
                   </div>
             )
-          }) : (<p>No resevations present yet</p>)}
-        </div>
-      )}
+          }) : <h3 className="empty-state">No resevations present yet</h3>}
+      </div>
     </section>
     </div>
   )

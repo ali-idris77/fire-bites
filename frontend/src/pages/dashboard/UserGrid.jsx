@@ -6,6 +6,7 @@ import Swal from 'sweetalert2'
 import { Link } from "react-router-dom"
 import useNotify from "../../hooks/useNotify"
 import { socket } from "../../sockets/socket"
+import Skeleton from "../../components/Skeleton"
 
 export default function UserGrid() {
       const [load, setLoad] = useState(false)
@@ -164,7 +165,25 @@ export default function UserGrid() {
     errtoast('Something went wrong. Try again later.')
   }
   }
-
+  const viewSwal = (u)=>{
+    Swal.fire({
+      title:'View Staff',
+      html:`
+      <div class='vswl'>
+       <div class="info">
+                <h4>Full Name : <span>${u.fullname}</span></h4>
+                <h4>Email : <span>${u.email}</span></h4>
+                <h4>Phone : <span>${u.phone}</span></h4>
+        </div>
+        <div class="info t2">
+                <h4>Level : <span>${lvls[u.level - 1]}</span></h4>
+                <h4>Status : <span>${u.isSuspended ? 'Suspended' : 'Active'}</span></h4>
+                <h4>Date Joined : <span>${new Date(u.createdAt).toDateString()}</span></h4>
+        </div>
+              </div>        
+      `
+})
+  }
   const mgnStaff = async (u)=>{
     Swal.fire({
       title:'Manage Staff',
@@ -263,9 +282,17 @@ export default function UserGrid() {
       <button>Bulk Add</button>
       </div>
       {
-        load ? (<h2>Loading...</h2>) :
-        (<div className="rsvdiv usr">
-          {filteredStaffs && filteredStaffs.length > 0 ? filteredStaffs.map(s =>{
+        load ? Array.from({length: 5}).map((_, i)=>{
+                return(
+                  <div className="skelCard">
+                <Skeleton height="1.5rem" width="50%"/>
+                <Skeleton width="25%"/>
+                <Skeleton width="50%"/>
+                <Skeleton width="35%%"/>
+                
+              </div>)}) :
+        <div className="rsvdiv usr">
+         {filteredStaffs && filteredStaffs.length > 0 ? filteredStaffs.map(s =>{
             return(
             <div className="usr-card" key={s._id}>
               <div className="info">
@@ -273,14 +300,16 @@ export default function UserGrid() {
                 <h4>Email : <span>{s.email}</span></h4>
                 <h4>Phone : <span>{s.phone}</span></h4>
               </div>
-              <div className="info">
+              <div className="info t2">
                 <h4>Level : <span>{lvls[s.level - 1]}</span></h4>
                 <h4>Status : <span>{s.isSuspended ? 'Suspended' : 'Active'}</span></h4>
                 <h4>Date Joined : <span>{new Date(s.createdAt).toDateString()}</span></h4>
               </div>
               <div className="action">
                 <div className="inact"><button onClick={()=>{
-                  console.log(s)
+                  viewSwal(s)
+                }}>View</button></div>
+                <div className="inact"><button onClick={()=>{
                   editSwal(s)
                 }}>Edit</button></div>
                 <div className="inact"><button onClick={()=>{
@@ -289,9 +318,9 @@ export default function UserGrid() {
               </div>
             </div>)
           }) :
-          (<h4>No Staffs Employed Yet...</h4>)}
-        </div>)
-      }
+          <h3 className="empty-state">No Staffs Employed Yet...</h3>}
+        </div>
+        }
     </section>
       </div>
       <div className="cust">
@@ -309,7 +338,15 @@ export default function UserGrid() {
     </section>
     <section className="cust">
       {
-        load ? (<h2>Loading...</h2>) :
+        load ? Array.from({length: 5}).map((_, i)=>{
+                return(
+                  <div className="skelCard">
+                <Skeleton height="1.5rem" width="50%"/>
+                <Skeleton width="25%"/>
+                <Skeleton width="50%"/>
+                <Skeleton width="35%%"/>
+                
+              </div>)}) :
         (<div className="rsvdiv">
           {filteredCust && filteredCust.length > 0 ? filteredCust.map(s =>{
             return(<div className="usr-card" key={s._id}>
@@ -323,7 +360,7 @@ export default function UserGrid() {
               
             </div>)
           }) :
-          (<h4>No customer data yet Yet...</h4>)}
+          (<h3 className="empty-state">No customer data yet Yet...</h3>)}
         </div>)
       }
     </section>

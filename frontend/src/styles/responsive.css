@@ -1,0 +1,44 @@
+@media (max-width: 768px) {
+ .hero-img img{
+    transform: translateY(-40%) !important;
+ }   
+
+}
+@media (max-width: 650px) {
+    .hero-div, .menu-hro{
+        display: flex !important;;
+        flex-direction: column;
+        align-items: center;
+    }
+    .hero-text{
+        align-items: center;
+        text-align: center;
+    }
+    .hero-img{
+        min-width: 70%;
+    }
+ .hero-img img{
+    transform: translateY(-5%) !important;
+ }   
+ .mnu-hdiv{
+    text-align: center;
+ }
+header nav .mnubtn{
+    display: block;
+ }
+ header nav ul{
+    flex-direction: column;
+    position: absolute;
+    top: 100%; 
+    left: -150%;
+    backdrop-filter: blur(5px);
+    width: 200px;
+    padding: 10px;
+    transition: all 400ms ease-in;
+    border-bottom: 1px solid var(--highlight);
+    background-color: var(--background);
+ }
+ header nav ul.open{
+    left: 0;
+ }
+}
