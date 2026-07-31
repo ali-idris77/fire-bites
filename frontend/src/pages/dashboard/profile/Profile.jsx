@@ -1,31 +1,19 @@
 import { useState, useEffect, useRef } from 'react';
-//import Cropper from 'cropperjs';
-//import 'cropperjs/dist/cropper.css';
-//import { toast } from 'react-toastify';
 import useAdminAuthContext from '../../../hooks/useAdminAuthContext';
 import ProfileNav from '../../../components/ProfileNav';
-//import Wallet from './Wallet';
-//import Appearance from './Appearance';
 import Security from './Security';
 import Legal from './Legal';
-//import Loading from '../../components/Loading';
 import Dashload from '../../../components/Dashload'
+import useNotify from '../../../hooks/useNotify';
+import Swal from 'sweetalert2';
 
 export default function Profile() {
   const [profile, setProfile] = useState(null);
   const [isLoading, setIsLoading] = useState(false)
-  // Hardcoded profile data
-  // const [editMode, setEditMode] = useState(false);
-  // const [tempProfile, setTempProfile] = useState(null);
-  // const [skillInputs, setSkillInputs] = useState(['']);
-  // const [avatarPreview, setAvatarPreview] = useState('');
-  // const [rawAvatar, setRawAvatar] = useState('');
-  // const [cropper, setCropper] = useState(null);
-  // //const cropperRef = useRef(null);
   const [active, setActive] = useState('profile')
+  const notify = useNotify()
   
   const {admin} = useAdminAuthContext()
-  
   useEffect(()=>{
     if(!admin) return
     setIsLoading(true)
@@ -62,13 +50,11 @@ export default function Profile() {
             <p><strong>Email:</strong> {profile?.email || 'Not set yet'}</p>
             <p><strong>Phone:</strong> {profile?.phone || 'Not set yet'}</p>
             <p><strong>Level:</strong> {profile?.level || 'Not set yet'}</p>
-            <button className='ghost-btn' >Request Profile Edit</button>
+            <button className='ghost-btn' onClick={notify('Profile Change Request', 'announcement', `${profile.fullname} wants to request a profile edit`,'mgt')}>Request Profile Edit</button>
           </div>
         </div>
       )}
 
-      {/* {active === 'wallet' && <Wallet profile={profile} setProfile={setProfile}/>} 
-      {active === 'app' && <Appearance profile={profile} setProfile={setProfile}/>}  */}
       {active === 'sec' && <Security profile={profile} setProfile={setProfile}/>} 
       {active === 'lgl' && <Legal profile={profile} setProfile={setProfile}/>} 
 

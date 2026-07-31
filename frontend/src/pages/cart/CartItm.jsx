@@ -79,6 +79,7 @@ export default function Cart() {
     if(!items.length) return
     setCheckingOut(true)
     try{
+        let customer
         let customerEmail
         let customerPhone
 
@@ -91,11 +92,13 @@ export default function Cart() {
             customerEmail = authData.value.email
             customerPhone = authData.value.phone
         }else{
+            customer = user.id
             customerEmail = user.email
             customerPhone = user.user
         }
 
         const payload = {
+            customer,
             customerEmail,
             customerPhone,
             amount: Number(totl),

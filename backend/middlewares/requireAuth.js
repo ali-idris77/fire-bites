@@ -10,7 +10,7 @@ const requireAuth = async(req, res, next)=>{
     const token = authorization.split(' ')[1]
     try{
        const {id} = jwt.verify(token, process.env.SECRET)
-       req.user = await User.findById(id).select('id')
+       req.user = await User.findById(id).select('id').select('email')
        next()
     }catch(error){
         res.status(401).json({code:'TOKEN_EXPIRED',error: "Request is not authorized"})

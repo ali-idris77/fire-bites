@@ -218,6 +218,39 @@ main{
   min-height:100vh;
   position: relative;
 }
+
+/* Page entrance animation */
+@keyframes pageFadeIn {
+  from{ opacity: 0; transform: translateY(6px);} 
+  to{ opacity: 1; transform: none; }
+}
+.page-animate{
+  animation: pageFadeIn 320ms ease both;
+}
+
+/* Staggered reveal for groups */
+@keyframes fadeUp {
+  from{ opacity: 0; transform: translateY(8px);} 
+  to{ opacity: 1; transform: none; }
+}
+.stagger > *{
+  opacity: 0;
+  transform: translateY(8px);
+  animation: fadeUp 420ms ease forwards;
+  animation-delay: calc(var(--stagger-index, 0) * 80ms);
+}
+
+/* Utility reveal class for single elements */
+.reveal{
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 360ms ease, transform 360ms ease;
+}
+.reveal.show{
+  opacity: 1;
+  transform: none;
+}
+
 section{
   max-width: 960px;
   width: min(960px, 100%);

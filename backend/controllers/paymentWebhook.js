@@ -1,10 +1,14 @@
 const crypto = require('crypto');
 const Order = require('../models/order');
 const User = require('../models/customer');
+const Cart = require('../models/cart');
 const Notification = require('../models/notification')
-const {getIo} = require('../sockets/socket')
+const {getIo} = require('../sockets/socket');
+const sendEmail = require('../services/email/sendEmail')
+const orderReceipt = require('../services/email/templates/orderReceipt')
 
 const paymentWebhook = async (req, res)=>{
+    console.log('webhook reached')
     const hash = crypto.createHmac(
         'sha512',
         process.env.PAYSTACK_SECRET_KEY
@@ -29,9 +33,17 @@ const paymentWebhook = async (req, res)=>{
         order.status = 'preparing'
         order.payment.paidAt = new Date()
         await order.save()
+
+        await Cart.findOneAndUpdate({customer: order.customer} , {$set: {items: []}})
+        
         const io = getIo()
         const notification = await Notification.create({title:'Order Payment', type:'order', message:'Order has been made and paid for', meantFor:"admin", reason:order._id})
-                io.to("admin").emit("notification", notification)
+        io.to("admin").emit("notification", notification)
+        sendEmail({
+            to: order.customerEmail,
+            subject: 'Order Payment',
+            html: orderReceipt(order)
+        })
     }
     res.sendStatus(200)
 }

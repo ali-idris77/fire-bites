@@ -17,7 +17,7 @@ const requireAdminAuth = ( minlevel = 1 )=>{
        if(!admin) return res.status(401).json({code:'NO_USER',error: "User data not found"})
 
         if(admin.level < minlevel) return res.status(403).json({error: "Access Denied"})
-       req.admin = {id:admin.id, level:admin.level}
+       req.admin = {id:admin.id,email:admin.email, level:admin.level}
        next()
     }catch(error){
         res.status(401).json({code:'TOKEN_EXPIRED',error: "Request is not authorized"})

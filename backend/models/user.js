@@ -28,12 +28,16 @@ const userSchema = mongoose.Schema({
     isSuspended:{
         type:Boolean,
         default:false
+    },
+    passwordResetRequired:{
+        type:Boolean,
+        default:false
     }
 },{timestamps:true})
 
 //creating static method
 //signup
-userSchema.statics.signup = async function (email, password,fullname,level=1, phone) {
+userSchema.statics.signup = async function (email, password,fullname,level=1, phone, passwordResetRequired=false) {
     //validation
     //empty fields check
     if(!email || !password ||!fullname){
@@ -57,7 +61,7 @@ userSchema.statics.signup = async function (email, password,fullname,level=1, ph
     const salt = await bcrypt.genSalt(10)
     const hash = await bcrypt.hash(password, salt)
     const usr = {
-        email, password:hash, fullname, level
+        email, password:hash, fullname, level, passwordResetRequired
     }
     if(phone) usr.phone = phone
     const user = await this.create(usr)

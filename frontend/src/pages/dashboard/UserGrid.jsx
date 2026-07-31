@@ -19,11 +19,140 @@ export default function UserGrid() {
       const [level, setLevel] = useState('')
       const [srch, setSrch] = useState('')
       const [err, setErr] = useState(null)
+      const [bulkLoading, setBulkLoading] = useState(false)
       const {admin} = useAdminAuthContext()
       const {errtoast, succtoast} = useToast()
       const {notify} = useNotify()
 
       const lvls = ['intern', 'Junior Staff', 'Senior Staff', 'Manager']
+
+      const fetchUsers = async()=>{
+          setLoad(true)
+          const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/users`,{
+          headers:{'authorization':`Bearer ${admin.token}`}})
+          const data = await res.json()
+          if(res.ok){
+            setErr(null)
+            setLoad(false)
+            setStaffs(data.staffs)
+            setCust(data.customers)
+          }else{
+            setErr('something went wrong')
+            setLoad(false)
+          }
+      }
+
+      const downloadBlob = (content, filename, type='text/csv') => {
+        const blob = new Blob([content], { type })
+        const url = URL.createObjectURL(blob)
+        const link = document.createElement('a')
+        link.href = url
+        link.download = filename
+        document.body.appendChild(link)
+        link.click()
+        link.remove()
+        URL.revokeObjectURL(url)
+      }
+
+      const createReportCsv = (report) => {
+        const rows = []
+        rows.push('Category,fullname,email,level,tempPassword,row,reason,message')
+        report.created.forEach(item => {
+          rows.push(`created,${item.fullname || ''},${item.email || ''},${item.level || ''},${item.tempPassword || ''},,,`)
+        })
+        report.skipped.forEach(item => {
+          rows.push(`skipped,,,,,${item.row || ''},${item.reason || ''},`)
+        })
+        report.errors.forEach(item => {
+          rows.push(`error,,,,,${item.row || ''},,${item.message || ''}`)
+        })
+        return rows.join('\n')
+      }
+
+      const downloadTemplate = async () => {
+        try {
+          const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/bulk/download-template`, {
+            method: 'POST',
+            headers: { 'authorization': `Bearer ${admin.token}` }
+          })
+          if (!res.ok) throw new Error('Template download failed')
+          const blob = await res.blob()
+          const url = URL.createObjectURL(blob)
+          const link = document.createElement('a')
+          link.href = url
+          link.download = 'staff-template.csv'
+          document.body.appendChild(link)
+          link.click()
+          link.remove()
+          URL.revokeObjectURL(url)
+        } catch (error) {
+          errtoast(error.message || 'Could not download template')
+        }
+      }
+
+      const handleBulkUpload = async (file) => {
+        const formData = new FormData()
+        formData.append('file', file)
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/bulk/upload`, {
+          method: 'POST',
+          headers: { 'authorization': `Bearer ${admin.token}` },
+          body: formData
+        })
+        const data = await res.json()
+        if (!res.ok) {
+          throw new Error(data.error || 'Bulk upload failed')
+        }
+        return data
+      }
+
+      const bulkAddSwal = async () => {
+        await Swal.fire({
+          title: 'Bulk Staff Import',
+          html: `
+            <p>Download the template, fill it in, then upload the completed CSV/XLSX file.</p>
+            <div class='swal2-input'>
+              <button type='button' id='downloadTemplate' class='swal2-confirm swal2-styled'>Download template</button>
+              <button type='button' id='selectFile' class='swal2-confirm swal2-styled'>Select file</button>
+              <input type='file' id='bulkFile' accept='.csv,.xls,.xlsx' style='display:none' />
+              <div id='bulkFileName' style='margin-top:12px; font-size:0.95rem; color:#444;'></div>
+            </div>
+          `,
+          showCloseButton: true,
+          showConfirmButton: false,
+          allowOutsideClick: false,
+          didOpen: () => {
+            const fileInput = document.getElementById('bulkFile')
+            const fileName = document.getElementById('bulkFileName')
+            document.getElementById('downloadTemplate').addEventListener('click', downloadTemplate)
+            document.getElementById('selectFile').addEventListener('click', () => fileInput.click())
+            fileInput.addEventListener('change', async (event) => {
+              const file = event.target.files[0]
+              if (!file) return
+              fileName.textContent = `Selected: ${file.name}`
+              try {
+                setBulkLoading(true)
+                const uploaded = await handleBulkUpload(file)
+                setBulkLoading(false)
+                const reportCsv = createReportCsv(uploaded.report)
+                downloadBlob(reportCsv, 'staff-upload-report.csv')
+                succtoast('Bulk upload finished; report downloaded.')
+                fetchUsers()
+                Swal.close()
+              } catch (error) {
+                setBulkLoading(false)
+                errtoast(error.message || 'Bulk upload failed')
+              }
+            })
+          }
+        })
+      }
+
+        const bulkButton = () => (
+          <button onClick={bulkAddSwal} disabled={bulkLoading}>
+            {bulkLoading ? 'Uploading...' : 'Bulk Add'}
+          </button>
+        )
+
       useEffect(()=>{
         const fetchUsers = async()=>{
           setLoad(true)
@@ -43,39 +172,14 @@ export default function UserGrid() {
 
         fetchUsers()
         socket.on("new-user", usr=>{
-          fetchUsers(
-
-
-
-            
-          )
+          fetchUsers()
         })
-        return ()=>{
-          socket.off("new-user")
-        }
-      },[])
-    const stf = staffs.filter(s => s.level !== 5)
-    const filteredStaffs = stf.filter(d => {
-    const query = {
-      search: search.trim().toLowerCase(),
-      status,
-      level
-     }
-    if(query.search && ![d.fullname, d.email].some(txt => txt?.toLowerCase().includes(query.search))) return false
-    if(query.level && d.level !== Number(query.level)) return false
-    return true
-  })
-
-  const filteredCust = cust.filter(d => {
-    const query = {
-      search: csearch.trim().toLowerCase()
-     }
-    if(query.search && !d.email.toLowerCase().includes(query.search)) return false
-    return true
-  })
-  const editSwal = async (u)=>{
-    console.log(u)
-    const result = await Swal.fire({
+      return ()=>{  
+        socket.off("new-user")
+      }
+      }, [])
+        const editSwal = async (u) => {
+      const result = await Swal.fire({
       title:'Edit Staff Info',
       html:`
       <div class='form-control'>      
@@ -202,7 +306,7 @@ export default function UserGrid() {
         if(u.level === 4){
         document.getElementById('pmt').disabled = true
         }else if(u.level === 1){
-          document.getElementById('dmt').dsabled = true
+          document.getElementById('dmt').disabled = true
         }
         document.getElementById('pmt').addEventListener('click',()=>{
           Swal.close()
@@ -248,6 +352,15 @@ export default function UserGrid() {
     })
   }
 
+  const filteredStaffs = staffs.filter(s => {
+    const matchesSearch = s.fullname.toLowerCase().includes(search.toLowerCase())
+    const matchesLevel = level ? s.level === Number(level) : true
+    return matchesSearch && matchesLevel
+  })
+  const filteredCust = cust.filter(c => {
+    const matchesSearch = c.email.toLowerCase().includes(csearch.toLowerCase())
+    return matchesSearch
+  })
   return (
     <>
       {updl && <Dashload/>}
@@ -279,7 +392,7 @@ export default function UserGrid() {
     <section className="stfs">
       <div className="bts">
       <Link to='/dashboard/users/create'><button>Add Staff</button></Link>
-      <button>Bulk Add</button>
+      {bulkButton()}
       </div>
       {
         load ? Array.from({length: 5}).map((_, i)=>{
@@ -291,7 +404,7 @@ export default function UserGrid() {
                 <Skeleton width="35%%"/>
                 
               </div>)}) :
-        <div className="rsvdiv usr">
+        <div className="rsvdiv usr stagger">
          {filteredStaffs && filteredStaffs.length > 0 ? filteredStaffs.map(s =>{
             return(
             <div className="usr-card" key={s._id}>

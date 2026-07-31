@@ -1,5 +1,8 @@
 const Reservation = require("../models/reserve");
 const {getIo} = require('../sockets/socket')
+const sendEmail = require('../services/email/sendEmail')
+const reservationTemplate = require('../services/email/templates/reservationTemplate')
+const sendWhatsapp = require('../services/whatsapp/sendWhatsapp')
 
 //controllers
 
@@ -74,7 +77,12 @@ const patch_reservation = async(req, res)=>{
         const reservation = await Reservation.findByIdAndUpdate(id, {$set:update}, {returnDocument: 'after'})
         io.to(reservation.email).emit("reserve-update", reservation)
         io.to("admin").emit("analytics-update", reservation)
-        res.status(200).json(reservation)
+        sendEmail({
+            to: reservation.email,
+            subject: 'Reservation Update',
+            html: reservationTemplate(reservation)
+        })
+         res.status(200).json(reservation)
     }catch(error){
         res.status(400).json({error:error.message, err:"Coldn't update Reservation"})
     }

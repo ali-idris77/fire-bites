@@ -12,7 +12,7 @@ async function paymentCallback(req, res) {
     );
     if(verification.data.data.status === "success"){
         const orderId = verification.data.data.metadata.orderId
-        return res.redirect(`${process.env.FRONTEND_URL}/order`);
+        return res.redirect(`${process.env.FRONTEND_URL}/bag?tab=order`);
     }
     res.redirect(`${process.env.FRONTEND_URL}/payment-failed`)
 }

@@ -2,6 +2,7 @@ import { useState } from "react"
 import useAuthContext from "../hooks/useAuthContext"
 import useAdminAuthContext from "../hooks/useAdminAuthContext"
 import { Link, useNavigate } from "react-router-dom"
+import { GoogleLogin } from "@react-oauth/google"
 
 export default function AuthForm({endpoint, fr='customer', type='login'}) {
     const [email, setEmail] = useState('')
@@ -47,7 +48,26 @@ export default function AuthForm({endpoint, fr='customer', type='login'}) {
             console.log(err)   
         }
     }
-
+    const handleGoogleSubmit = async (response)=>{
+        try{
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/google`, {
+            method:'POST',
+            headers:{'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                token: response.credential }) 
+        });
+        const data = await res.json()
+        if(res.ok){
+                dispatch({type:'LOGIN', payload:data})
+                localStorage.setItem('user', JSON.stringify(data))
+                setFetching(false)
+                setError(null)
+                console.log(data)
+                navigate('/menu')
+            }
+        }catch(err){
+            console.log(err)
+        }}
   return(
         <form onSubmit={
             (e)=>{
@@ -55,6 +75,12 @@ export default function AuthForm({endpoint, fr='customer', type='login'}) {
                 handleSubmit()
             }
         }>
+           {fr === 'customer' && <div className="form-action">
+             <GoogleLogin onSuccess={handleGoogleSubmit}
+            onError={()=>{
+                console.log('failed')
+            }}/>
+           </div>}
             <div className="form-action">
                 <label htmlFor="em">Email </label>
                 <input type="text" id="em" onChange={(e)=>{

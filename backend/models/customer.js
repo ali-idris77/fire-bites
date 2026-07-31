@@ -5,18 +5,29 @@ const bcrypt = require('bcrypt')
 const customerSchema = mongoose.Schema({
     email:{
         type:String,
-        unique:true
+        unique:true,
+        required:true
     },
     phone:{
         type:String,
         unique:true,
-        required:true
+        required: function(){
+            return this.provider !== 'google';
+        }
     },
     password:{
         type:String,
-        required:true
+        required: function(){
+            return this.provider !== 'google';
+        }
     },
-    address:[String]
+    address:[String],
+    googleId:{
+        type:String
+    },
+    provider:{
+        type:String
+    }
 },{timestamps:true})
 
 //creating static method

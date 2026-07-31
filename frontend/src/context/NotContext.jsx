@@ -39,7 +39,7 @@ const NotContextProvider = ({children}) => {
     const {admin} = useAdminAuthContext()
     useEffect(()=>{
          if(!user && !admin) return
-             fetch(`${import.meta.env.VITE_API_URL}/api/nots/${user? user.email : 'admin'}`,{
+             fetch(`${import.meta.env.VITE_API_URL}/api/nots/${user? user.email : admin.level >= 4 ? 'mgt' : 'admin'}`,{
                   headers:{'Content-Type':'application/json',
                      'Authorization': `Bearer ${user? user.token : admin.token}`
                  }

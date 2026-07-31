@@ -39,6 +39,15 @@ const a_get = async (req, res)=>{
         res.status(500).json(err)
     }
 }
+const m_get = async (req, res)=>{
+    try{
+        const notifications = await Notification.find({$or:[{meantFor:"mgt"}, {meantFor:"admin"}]}).populate('reason').populate('reserv').sort({createdAt:-1})
+        console.log(notifications)
+        res.status(200).json(notifications)
+    }catch(err){
+        res.status(500).json(err)
+    }
+}
 
 const update = async (req, res)=>{
     const update = req.body;
@@ -61,5 +70,5 @@ const deleteOne = async (req, res)=>{
     }
 }
 module.exports = {
-    create, get ,p_get, a_get, update, deleteOne
+    create, get ,p_get, a_get, m_get, update, deleteOne
 }

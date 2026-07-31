@@ -33,6 +33,29 @@ module.exports.updateStaff = async (req, res) =>{
         res.status(500).json({error:err.message})
     }
 }
+module.exports.getUserProfile = async (req, res) =>{
+    const id = req.user.id
+    const profile = await Customer.findOne({id}).select('-password')
+    res.status(200).json(profile)
+    
+}
+module.exports.updateUser = async (req, res) =>{
+    const id = req.params.id
+    const update = req.body;
+    try{
+    if(update.email){
+        const thersEmail = await Customer.findOne({email:update.email})
+        if(id !== thersEmail.id){
+            throw new Error('Email already taken')
+        } 
+    }
+    const user = await Customer.findByIdAndUpdate(id, {$set:update}, {returnDocument:'after'})
+    res.status(200).json(user)
+    }catch(err){
+        console.log(err)
+        res.status(500).json({error:err.message})
+    }
+}
 module.exports.deleteStaff = async (req, res) =>{
     const id = req.params.id
     try{

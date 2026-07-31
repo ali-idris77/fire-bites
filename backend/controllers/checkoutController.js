@@ -1,5 +1,6 @@
 const axios = require('axios')
 const crypto = require('crypto')
+const {getIo} = require('../sockets/socket')
 const dotenv = require('dotenv')
 dotenv.config()
 
@@ -8,7 +9,7 @@ const User = require('../models/customer')
 
 const checkout = async(req, res)=>{
     const {customer, customerEmail, customerPhone, items, amount} = req.body;
-
+    const io = getIo()
     try{
         const orderAmount = Number(amount || 0)
         const reference = crypto.randomUUID()
@@ -19,7 +20,7 @@ const checkout = async(req, res)=>{
         }))
 
         const order = await Order.create({
-            customer: customer || undefined,
+            customer: customer || undefined, 
             customerEmail,
             customerPhone,
             items: normalizedItems,
@@ -28,6 +29,9 @@ const checkout = async(req, res)=>{
                 reference
             }
         })
+        io.to("admin").emit("order-create", order)
+        io.to("admin").emit("analytics-update", order)
+        
 
         const response = await axios.post('https://api.paystack.co/transaction/initialize',{
             email: customerEmail || process.env.PAYSTACK_RECEIVER_EMAIL || 'hello@fireybites.com',

@@ -31,6 +31,12 @@ app.use(cors({
         credentials:true
 }))
 
+app.post('/payment/webhook', express.raw({
+        type:'application/json'
+}),
+paymentWebhook
+)
+
 app.use(express.json());
 app.use('/api/uploads', express.static(__dirname + '/uploads'))
 //calling routes
@@ -54,10 +60,4 @@ mongoose.connect(process.env.MONGODB_URI)
     console.log(err);
 });
 
-app.post('/webhook/paystack', express.raw({
-        type:'application/json'
-}),
-paymentWebhook
-)
 app.get('/payment/callback', paymentCallback)
-    

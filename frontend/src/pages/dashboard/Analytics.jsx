@@ -24,6 +24,26 @@ export default function Analytics() {
   const [cntLoad, setCntLoad] = useState(false)
   const [revLoad, setRevLoad] = useState(false)
   const {admin} = useAdminAuthContext()
+  const downloadReport = async () => {
+    try{
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/dash/download-report`, {
+        method: 'GET',
+        headers: { 'authorization': `Bearer ${admin.token}` }
+      })
+      if(!res.ok) throw new Error('Report download failed')
+      const blob = await res.blob()
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = 'analytics-report.pdf'
+      document.body.appendChild(a)
+      a.click()
+      a.remove()
+      URL.revokeObjectURL(url)
+    }catch(err){
+      console.error(err)
+    }
+  }
   
   //functions for fetching
   const fetchAnalytics = useCallback(async ()=>{
@@ -111,11 +131,14 @@ export default function Analytics() {
       socket.off("analytics-update")
     }
   },[])
-  console.log(orderData, chartData, lschart, bschart, revchart, bsyhr)
+  console.log(orderData, orderStats)
   return (
     <div className="wrapper">
-      <h2>Analyitcs</h2>
-      <div className="ann dash-grid">
+      <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+        <h2>Analyitcs</h2>
+        <button onClick={downloadReport}>Download Report (PDF)</button>
+      </div>
+      <div className="ann dash-grid stagger">
       <div className="dash-card a1">
         <h3>Total Revenue</h3>
         <div className="content">

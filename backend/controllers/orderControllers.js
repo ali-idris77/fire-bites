@@ -1,5 +1,7 @@
 const Order = require('../models/order')
 const {getIo} = require('../sockets/socket')
+const sendEmail = require('../services/email/sendEmail')
+const orderStatus = require('../services/email/templates/orderStatus')
 
 const create = async (req, res)=>{
     const {items, customer, customerEmail, customerPhone, amount} = req.body;
@@ -24,9 +26,9 @@ const get = async (req, res)=>{
     }
 }
 const get_p = async (req, res)=>{
-    const customer = req.user._id
+    const customerEmail = req.user.email
     try{
-        const orders = await Order.find({customer}).populate('items.dish').sort({createdAt:-1})
+        const orders = await Order.find({customerEmail}).populate('items.dish').sort({createdAt:-1})
         res.status(200).json(orders)
     }catch(err){
         console.log(err)
@@ -51,6 +53,11 @@ const update = async (req, res)=>{
         const updated = await Order.findByIdAndUpdate(id, {$set:update}, {returnDocument: 'after'})
         io.to(updated.customerEmail).emit("order-update", updated)
         io.to("admin").emit("analytics-update", updated)
+        sendEmail({
+            to: updated.customerEmail,
+            subject: 'Order Update',
+            html: orderStatus(updated)
+        })
         res.status(200).json(updated)
     }catch(err){
         res.status(500).json(err)
