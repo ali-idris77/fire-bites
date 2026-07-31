@@ -80,7 +80,7 @@ export default function FoodGrid({foods, loading, item}) {
       const data = await res.json()
       if(res.ok){
         const itm = data.items.filter(i => i.dish._id === f._id)
-        console.log(itm[0])
+        (itm[0])
         dispatch({type:'ADD_CART', payload:itm[0]})
         setAdding(null)
         Swal.fire({
@@ -89,11 +89,9 @@ export default function FoodGrid({foods, loading, item}) {
         })
       }else{
         setAdding(null)
-        console.log('error happend')
       }
     }catch(err){
         setAdding(null)
-        console.log('error happend')
       }
     }
 

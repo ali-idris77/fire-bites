@@ -6,12 +6,13 @@ import Legal from './Legal';
 import Dashload from '../../../components/Dashload'
 import useNotify from '../../../hooks/useNotify';
 import Swal from 'sweetalert2';
+import Skeleton from '../../../components/Skeleton'
 
 export default function Profile() {
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState([]);
   const [isLoading, setIsLoading] = useState(false)
   const [active, setActive] = useState('profile')
-  const notify = useNotify()
+  const {notify} = useNotify()
   
   const {admin} = useAdminAuthContext()
   useEffect(()=>{
@@ -33,16 +34,16 @@ export default function Profile() {
     })
   }, [])
 
-  
-  if(isLoading){
-    return <Dashload/>
-  }
-
   return (
     <div className="wrapper profile-wrapper page-fade">
       <ProfileNav active={active} setActive={setActive}/>
 
-      {active === 'profile' && (
+      { isLoading ? <div className="profile-info">
+              <Skeleton  height='1.2rem' width='60%'/>
+              <Skeleton height='1.2rem' width='65%'/>
+              <Skeleton height='1.2rem' width='40%'/>
+              <Skeleton height='2.rem' width='4rem' radius='20px'/>
+            </div> : active === 'profile' && 
         <div className="profile-tab">
           <h2>Profile</h2>
           <div className="profile-info nice">
@@ -50,10 +51,12 @@ export default function Profile() {
             <p><strong>Email:</strong> {profile?.email || 'Not set yet'}</p>
             <p><strong>Phone:</strong> {profile?.phone || 'Not set yet'}</p>
             <p><strong>Level:</strong> {profile?.level || 'Not set yet'}</p>
-            <button className='ghost-btn' onClick={notify('Profile Change Request', 'announcement', `${profile.fullname} wants to request a profile edit`,'mgt')}>Request Profile Edit</button>
+            <button className='ghost-btn' onClick={()=>{
+              notify('Profile Change Request', 'announcement', `${profile?.fullname} wants to request a profile edit`,'mgt')
+            }}>Request Profile Edit</button>
           </div>
         </div>
-      )}
+      }
 
       {active === 'sec' && <Security profile={profile} setProfile={setProfile}/>} 
       {active === 'lgl' && <Legal profile={profile} setProfile={setProfile}/>} 

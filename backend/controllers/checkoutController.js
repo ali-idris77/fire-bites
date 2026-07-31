@@ -31,6 +31,8 @@ const checkout = async(req, res)=>{
         })
         io.to("admin").emit("order-create", order)
         io.to("admin").emit("analytics-update", order)
+        io.to("mgt").emit("order-create", order)
+        io.to("mgt").emit("analytics-update", order)
         
 
         const response = await axios.post('https://api.paystack.co/transaction/initialize',{

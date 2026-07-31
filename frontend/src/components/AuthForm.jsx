@@ -14,7 +14,6 @@ export default function AuthForm({endpoint, fr='customer', type='login'}) {
     const {admin, dispatch: a_dispatch} = useAdminAuthContext()
     const navigate = useNavigate()
     const handleSubmit = async ()=>{
-        console.log( email, phone, password)
         setFetching(true)   
         try{
             const res = await fetch(endpoint, {
@@ -37,7 +36,7 @@ export default function AuthForm({endpoint, fr='customer', type='login'}) {
                 localStorage.setItem('user', JSON.stringify(data))}
                 setFetching(false)
                 setError(null)
-                console.log(data)
+                (data)
                 if(!data.isStaff){
                     navigate('/menu')
                 }else{
@@ -62,7 +61,6 @@ export default function AuthForm({endpoint, fr='customer', type='login'}) {
                 localStorage.setItem('user', JSON.stringify(data))
                 setFetching(false)
                 setError(null)
-                console.log(data)
                 navigate('/menu')
             }
         }catch(err){
@@ -78,7 +76,6 @@ export default function AuthForm({endpoint, fr='customer', type='login'}) {
            {fr === 'customer' && <div className="form-action">
              <GoogleLogin onSuccess={handleGoogleSubmit}
             onError={()=>{
-                console.log('failed')
             }}/>
            </div>}
             <div className="form-action">

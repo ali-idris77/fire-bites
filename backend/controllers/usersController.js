@@ -35,7 +35,7 @@ module.exports.updateStaff = async (req, res) =>{
 }
 module.exports.getUserProfile = async (req, res) =>{
     const id = req.user.id
-    const profile = await Customer.findOne({id}).select('-password')
+    const profile = await Customer.findById(id).select('-password')
     res.status(200).json(profile)
     
 }
@@ -49,7 +49,7 @@ module.exports.updateUser = async (req, res) =>{
             throw new Error('Email already taken')
         } 
     }
-    const user = await Customer.findByIdAndUpdate(id, {$set:update}, {returnDocument:'after'})
+    const user = await Customer.findByIdAndUpdate(id, {$set:update.profile}, {returnDocument:'after'})
     res.status(200).json(user)
     }catch(err){
         console.log(err)

@@ -14,7 +14,6 @@ export default function StaffAuth() {
     const {admin} = useAdminAuthContext()
     const navigate = useNavigate()
     const handleSubmit = async ()=>{
-        console.log( fullname, email, phone, password, level)
         setFetching(true)   
         try{
             const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/signup`, {

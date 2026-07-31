@@ -2,14 +2,15 @@ import { useState, useEffect, useRef } from 'react';
 import useAuthContext from '../hooks/useAuthContext';
 import ProfileNav from '../components/ProfileNav';
 import Dashload from '../components/Dashload'
-import { errtoast, succtoast } from '../hooks/useToast'
-export default function Profile() {
+import useToast from '../hooks/useToast'
+import Skeleton from '../components/Skeleton';
+export default function UserProfile() {
   const [profile, setProfile] = useState(null);
   const [isLoading, setIsLoading] = useState(false)
   const [active, setActive] = useState('profile')
   const [editMode, setEditMode] = useState(false);
   const [tempProfile, setTempProfile] = useState(null);
-  
+  const { errtoast, succtoast } = useToast()
   const {user} = useAuthContext()
   
   useEffect(()=>{
@@ -39,7 +40,7 @@ export default function Profile() {
       }
     };
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/profile-update/${user.id}`, {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/profile-update/${user.id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -48,13 +49,14 @@ export default function Profile() {
         body: JSON.stringify(updatedProfile)
       });
       if (!res.ok) {
-        console.log('erred')
+         errtoast('Profile update failed. Please try again.');
         return;
       }
       const data = await res.json();
       setProfile(data);
       setTempProfile(data);
       succtoast('Profile saved successfully.');
+      
     } catch (error) {
       console.error('Profile update failed', error);
       errtoast('Profile update failed. Please try again.');
@@ -73,22 +75,22 @@ export default function Profile() {
     setTempProfile({ ...tempProfile, profile:{...tempProfile?.profile,[name]: value} });
   };
 
-  
-  if(isLoading){
-    return <Dashload/>
-  }
-
   return (
     <div className="wrapper profile-wrapper page-fade">
-      <div className="profile-tab">
-          <h2>Profile</h2>
-          <div className="profile-info nice">
-            <p><strong>Name:</strong> {profile?.address || 'Not set yet'}</p>
+      {isLoading ? <div className="profile-info">
+        <Skeleton  height='1.2rem' width='60%'/>
+        <Skeleton height='1.2rem' width='65%'/>
+        <Skeleton height='1.2rem' width='40%'/>
+        <Skeleton height='2.rem' width='4rem' radius='20px'/>
+      </div> : <div className="profile-tab usr">
+          
+          <div className="profile-info usr nice">
+            <h2>Profile</h2>
             <p><strong>Email:</strong> {profile?.email || 'Not set yet'}</p>
+            <p><strong>Address:</strong> {profile?.address || 'Not set yet'}</p>
             <p><strong>Phone:</strong> {profile?.phone || 'Not set yet'}</p>
            <button className='ghost-btn' onClick={() => setEditMode(true)}>Edit Profile</button>
           </div>
-
           {editMode && (
             <div className="modal-overlay">
               <div className="modal">
@@ -108,7 +110,7 @@ export default function Profile() {
                     <input
                       type="text"
                       name="address"
-                      value={tempProfile?.profile.address || ''}
+                      value={tempProfile?.profile?.address || ''}
                       onChange={handleInputChange}
                     />
                   </label>
@@ -119,7 +121,7 @@ export default function Profile() {
               </div>
             </div>
           )}
-        </div>
+        </div>}
     </div>
   );
 }

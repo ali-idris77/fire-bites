@@ -203,7 +203,6 @@ export default function UserGrid() {
       }
     })
     if(result.isConfirmed){
-      console.log(result.value)
       try{
       setUpdl(true)
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/user/update/${u._id}`,{
@@ -376,7 +375,6 @@ export default function UserGrid() {
         }}/>
       </div>
       <div className="filt" onChange={(e)=>{
-        console.log(e.target.value)
          setLevel(e.target.value)
       }}>
         <select name="" id="">

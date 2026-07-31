@@ -34,7 +34,6 @@ export default function Reservation() {
   }
 
   const updResrv = async (id, upd)=>{
-    console.log(upd)
     setUpdl(true)
     try{
     const res = await fetch(`${import.meta.env.VITE_API_URL}/api/reserve/update/${id}`,{
@@ -47,7 +46,7 @@ export default function Reservation() {
     const data = await res.json()
     if(res.ok){
       const newResev = resev.map(r => r._id === data._id ? data : r)
-      console.log(newResev)
+      (newResev)
       setResev(newResev)
       setUpdl(false)
       succtoast('Status changed successfully')
@@ -72,7 +71,6 @@ export default function Reservation() {
         headers:{'authorization': `Bearer ${admin.token}`}
       })
       const data = await res.json()
-      console.log(data)
       if(!res.ok){
         setErr('Something Went Wrong Try Again Later')
         setLoad(false)
@@ -118,7 +116,7 @@ export default function Reservation() {
         }}/>
       </div>
       <div className="filt" onChange={(e)=>{
-        console.log(e.target.value)
+        (e.target.value)
          setStatus(e.target.value)
       }}>
         <select name="" id="">
@@ -130,17 +128,6 @@ export default function Reservation() {
           <option value="no-show">No show</option>
         </select>
         </div>        
-      
-    {/* <div className="filt" onChange={(e)=>{
-        console.log(e.target.value)
-         set(e.target.value)
-      }}>
-        <select name="" id="">
-          <option value="">All</option>
-          <option value="new">New</option>
-          <option value="special">Special</option>
-        </select>
-        </div>  */}
         </div>       
     </section>
     <section className="rsv"><div className="rsvdiv">
@@ -177,7 +164,6 @@ export default function Reservation() {
                       <button
                       disabled={r.status === 'completed' || r.status === 'rejected' || r.status === 'no-show'}
                        onClick={()=>{
-                        console.log(r._id)
                         const id = r._id 
                         let upd = r.status ==='pending' ? 'confirmed' : 'completed'
                         updResrv(id, upd)

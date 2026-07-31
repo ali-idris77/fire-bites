@@ -12,7 +12,6 @@ export default function DashHead({ toggleSidebar }) {
   const navigate = useNavigate();
   
   const unreadCount = nots?.filter((n) => !n.isRead).length || 0;
-  console.log(nots, unreadCount)
   const initials = admin?.user ? admin.user.split('@')[0].slice(0, 1).toUpperCase() : 'JD';
 
   return (

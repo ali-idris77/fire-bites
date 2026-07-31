@@ -2,6 +2,7 @@ import { useState } from "react"
 import useReserveContext from '../hooks/useReserveContext'
 import Swal from 'sweetalert2'
 import useNotify from "../hooks/useNotify"
+import Icon from "../components/Icon"
 
 const locations = [
   {
@@ -76,9 +77,9 @@ export default function Contact() {
       <h2>Follow <span className="firey">Firey</span> Bites</h2>
       <p>Stay up to date with our latest dishes, offers, and special events.</p>
       <div className="social-links">
-        <a href="https://instagram.com" target="_blank" rel="noreferrer">Instagram</a>
-        <a href="https://facebook.com" target="_blank" rel="noreferrer">Facebook</a>
-        <a href="https://x.com" target="_blank" rel="noreferrer">X</a>
+        <a href="https://instagram.com" target="_blank" rel="noreferrer"><Icon name='ig'/> Instagram</a>
+        <a href="https://facebook.com" target="_blank" rel="noreferrer"><Icon name='fb'/> Facebook</a>
+        <a href="https://x.com" target="_blank" rel="noreferrer"><Icon name='x'/> X</a>
       </div>
     </section>
 

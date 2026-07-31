@@ -52,7 +52,6 @@ const post_dish = async(req, res)=>{
         error = { message:'Please add an image'}
     }
     const image = {url:req.file.filename}
-    console.log(image)
     const dbody ={name, price, category, image}
     if(discountPercentage) {
         dbody.discountPercentage = discountPercentage

@@ -24,7 +24,6 @@ export default function Cart() {
             return sum + price * item.quantity
         }, 0)
     }
-    console.log('total', totl)
     const updCart = async (itm ,typ='rem')=>{
         let qty;
         if(typ === 'add'){
@@ -33,7 +32,6 @@ export default function Cart() {
             qty = itm.quantity - 1
         }
         try{
-            console.log(qty, itm.dish._id)
         const res = await fetch(`${import.meta.env.VITE_API_URL}/api/cart/update`,{
             method:'POST',
             headers:{'Content-Type':'application/json',
@@ -55,7 +53,6 @@ export default function Cart() {
         }
     }
    const removeCartItem = async (itm)=>{
-   console.log('removing../...')
     try{
         const res = await fetch(`${import.meta.env.VITE_API_URL}/api/cart/delete`,{
             method:'POST',
@@ -67,7 +64,6 @@ export default function Cart() {
             }) 
         })
         if(res.ok){
-            console.log('removed ', itm)
             dispatch({type:'DEL_CART', payload:itm})
         }
     }catch(err){
@@ -184,7 +180,7 @@ export default function Cart() {
             }) : <h3 className='empty-state'>no cart items</h3>)
         } 
         {items.length > 0 && <div className="checkout">
-                <p>total: {totl}</p>
+                <p className='ttller'>Total: {totl}</p>
                 <button disabled={checkingOut} onClick={handleCheckout}>{checkingOut ? 'Redirecting...' : 'Checkout'}</button>
          </div>}
     </div></section>

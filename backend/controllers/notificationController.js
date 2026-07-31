@@ -33,7 +33,6 @@ const p_get = async (req, res)=>{
 const a_get = async (req, res)=>{
     try{
         const notifications = await Notification.find({meantFor:"admin"}).populate('reason').populate('reserv').sort({createdAt:-1})
-        console.log(notifications)
         res.status(200).json(notifications)
     }catch(err){
         res.status(500).json(err)
@@ -42,7 +41,6 @@ const a_get = async (req, res)=>{
 const m_get = async (req, res)=>{
     try{
         const notifications = await Notification.find({$or:[{meantFor:"mgt"}, {meantFor:"admin"}]}).populate('reason').populate('reserv').sort({createdAt:-1})
-        console.log(notifications)
         res.status(200).json(notifications)
     }catch(err){
         res.status(500).json(err)

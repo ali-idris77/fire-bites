@@ -57,7 +57,7 @@ module.exports.overview_values = async (req, res)=>{
         }
         
     }
-    ]),
+    ]), 
      Order.aggregate([
         {
             $match:{
@@ -87,15 +87,17 @@ module.exports.overview_values = async (req, res)=>{
         $match:{
             status:"completed"
         }
+    },{
+        $unwind:"$items"
     },
         {
             $group:{
-            _id:"$dish",
+            _id:"$items.dish",
             unitSold:{
-                $sum:"$quantity"
+                $sum:"$items.quantity"
             },
             revenue:{
-                $sum:"$amount"
+                $sum:"$items.amount"
             },
             totalOrder:{
                 $sum:1
@@ -319,15 +321,17 @@ module.exports.analytics_values = async (req, res)=>{
         $match:{
             status:"completed"
         }
+    },{
+        $unwind:"$items"
     },
         {
             $group:{
-            _id:"$dish",
+            _id:"$items.dish",
             unitSold:{
-                $sum:"$quantity"
+                $sum:"$items.quantity"
             },
             revenue:{
-                $sum:"$amount"
+                $sum:"$items.amount"
             },
             totalOrder:{
                 $sum:1
@@ -369,15 +373,17 @@ module.exports.analytics_values = async (req, res)=>{
         $match:{
             status:"completed"
         }
+    },{
+        $unwind:"$items"
     },
         {
             $group:{
-            _id:"$dish",
+            _id:"$items.dish",
             unitSold:{
-                $sum:"$quantity"
+                $sum:"$items.quantity"
             },
             revenue:{
-                $sum:"$amount"
+                $sum:"$items.amount"
             },
             totalOrder:{
                 $sum:1
@@ -447,9 +453,9 @@ module.exports.rev_ovt = async (req, res)=>{
         sortn = { "_id.year":1, "_id.month":1 }
         lbl =  {
                 $concat: [
-                    {$toString:"_id.year"},
+                    {$toString:"$_id.year"},
                     " ",
-                    {$toString:"_id.month"}
+                    {$toString:"$_id.month"}
                 ]
             }
         break;
@@ -462,9 +468,9 @@ module.exports.rev_ovt = async (req, res)=>{
             sortn = { "_id.year":1, "_id.week":1 }
             lbl =  {
                 $concat: [
-                    {$toString:"_id.year"},
+                    {$toString:"$_id.year"},
                     " ",
-                    {$toString:"_id.week"}
+                    {$toString:"$_id.week"}
                 ]
             }
         break;
@@ -478,11 +484,11 @@ module.exports.rev_ovt = async (req, res)=>{
             sortn = { "_id.year":1, "_id.month":1, "_id.day":1 }
             lbl =  {
                 $concat: [
-                    {$toString:"_id.year"},
+                    {$toString:"$_id.year"},
                     " ",
-                    {$toString:"_id.month"},
+                    {$toString:"$_id.month"},
                     " ",
-                    {$toString:"_id.day"}
+                    {$toString:"$_id.day"}
                 ]
             }
         
@@ -745,22 +751,24 @@ module.exports.download_report = async (req, res) => {
             $match:{
                 status:"completed"
             }
-        },
-            {
-                $group:{
-                _id:"$dish",
-                unitSold:{
-                    $sum:"$quantity"
-                },
-                revenue:{
-                    $sum:"$amount"
-                },
-                totalOrder:{
-                    $sum:1
-                }
+        },{
+        $unwind:"$items"
+    },
+        {
+            $group:{
+            _id:"$items.dish",
+            unitSold:{
+                $sum:"$items.quantity"
+            },
+            revenue:{
+                $sum:"$items.amount"
+            },
+            totalOrder:{
+                $sum:1
             }
-        },
-            {
+        }
+    },
+        {
                 $sort:{
                 unitSold: -1
             }

@@ -21,7 +21,7 @@ const customerSchema = mongoose.Schema({
             return this.provider !== 'google';
         }
     },
-    address:[String],
+    address:String,
     googleId:{
         type:String
     },

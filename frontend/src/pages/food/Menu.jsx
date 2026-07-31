@@ -65,7 +65,7 @@ export default function Menu() {
         }}/>
       </div>
       <div className="filt" onChange={(e)=>{
-        console.log(e.target.value)
+        (e.target.value)
         if(e.target.value === "") setTag([])
         else setTag([e.target.value])
       }}>

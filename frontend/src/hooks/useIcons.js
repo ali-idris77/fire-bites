@@ -7,7 +7,12 @@ import {BiLogoTwitter, BiLogoInstagram,
     BiFile,
     BiMenu,
     BiSlider,
-    BiSliderAlt} from 'react-icons/bi'
+    BiSliderAlt,
+    BiBox,
+    BiLogoInstagram,
+    BiLogoTwitter,
+    BiLogoFacebook
+} from 'react-icons/bi'
 import {HiUserGroup, HiUser, HiUsers} from 'react-icons/hi'
 
 const useIcons = () => {
@@ -28,7 +33,11 @@ const useIcons = () => {
         guard:BiShield,
         legal:BiFile,
         menu:BiMenu,
-        slider:BiSliderAlt 
+        slider:BiSliderAlt,
+        box: BiBox,
+        ig:BiLogoInstagram,
+        x:BiLogoTwitter,
+        fb:BiLogoFacebook,
     }
     return icons;
 }

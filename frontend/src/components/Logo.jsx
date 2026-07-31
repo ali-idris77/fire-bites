@@ -1,7 +1,17 @@
 
 export default function Logo() {
   return (
-    <div className="lgo"><h2>Firey</h2>
+    <div className="lgo">
+      <>
+<svg width="30px" height="30px" viewBox="0 0 400 400" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg">
+  <g id="firey">
+    <path d="M0 0L400 0L400 400L0 400L0 0Z" id="Rectangle-2" fill="#D3D3D3" fillOpacity="0" fillRule="evenodd" stroke="none" />
+    <path d="M261.1 106.163C310.85 205.663 127.667 286.751 161.6 354.913C195.533 423.076 280.726 399.015 310.85 378.813C340.974 358.611 360.6 330.038 360.6 255.413C360.6 155.913 261.1 106.163 261.1 106.163L261.1 106.163Z" id="Shape-Path-2" fill="#202020" fill-rule="evenodd" stroke="none" />
+    <path d="M139 1.2002C188.75 100.7 39.5 150.45 39.5 249.95C39.5 349.45 139 399.2 139 399.2C90.245 300.695 238.5 249.95 238.5 150.45C238.5 50.9502 139 1.2002 139 1.2002L139 1.2002Z" id="Mask" fill="#EB2F00" fill-rule="evenodd" stroke="none" />
+  </g>
+</svg>
+      </>
+      <h2 className='firey'>Firey</h2>
     <h2>Bites</h2></div>
   )
 }

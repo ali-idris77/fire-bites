@@ -4,7 +4,7 @@ const crypto = require('crypto')
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) =>{
-        cb(null, 'uploads/dishes/')
+        cb(null, 'uploads/temp/')
     },
     filename: (req, file, cb) =>{
         cb(null, `${crypto.randomUUID()}${path.extname(file.originalname)}`)

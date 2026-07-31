@@ -20,7 +20,6 @@ export default function Header() {
     setOpen(!open)
   }
   const unreadCount = nots?.filter((n) => !n.isRead).length || 0;
-  console.log('nit',nots, unreadCount)
   return (
     <header>
       <nav className={open ? 'open' : ''}>
@@ -55,13 +54,16 @@ export default function Header() {
                 <Icon name='notif'/>
                 {unreadCount > 0 && <span className="badge">{unreadCount}</span>}
             </span>
-            <div className="avatar">
+            <div className="avatar pointer" onClick={()=>{
+              if(!user)return
+              navigate('/profile')
+            }}>
               {user? user?.email?.slice(0,1).toUpperCase() : admin?.user?.slice(0,1).toUpperCase()}
             </div>
             <span onClick={()=>{
               logout()
             }}>
-            <Icon name="logout"/>
+            <Icon className="pointer" name="logout"/>
             </span>
             </>
           )

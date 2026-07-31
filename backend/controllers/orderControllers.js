@@ -5,11 +5,13 @@ const orderStatus = require('../services/email/templates/orderStatus')
 
 const create = async (req, res)=>{
     const {items, customer, customerEmail, customerPhone, amount} = req.body;
-    const io =getIo()
+    const io = getIo()
     try{
         const order = await Order.create({dish, customer, customerEmail, customerPhone, amount})
         io.to("admin").emit("order-create", order)
         io.to("admin").emit("analytics-update", order)
+        io.to("mgt").emit("order-create", order)
+        io.to("mgt").emit("analytics-update", order)
         res.status(200).json(order)
     }catch(err){
         console.log(err)
@@ -53,6 +55,7 @@ const update = async (req, res)=>{
         const updated = await Order.findByIdAndUpdate(id, {$set:update}, {returnDocument: 'after'})
         io.to(updated.customerEmail).emit("order-update", updated)
         io.to("admin").emit("analytics-update", updated)
+        io.to("mgt").emit("analytics-update", updated)
         sendEmail({
             to: updated.customerEmail,
             subject: 'Order Update',

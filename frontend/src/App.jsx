@@ -23,6 +23,7 @@ import ProtectAdmin from './components/ProtectAdmin'
 import Unauthorized from './pages/admin/Unauthorized'
 import InitRedirect from './components/InitRedirect'
 import Notification from './pages/Notification'
+import UserProfile from './pages/Profile'
 import StaffAuth from './pages/dashboard/StaffAuth'
 import FoodEdit from './pages/dashboard/FoodEdit'
 import DishGrid from './pages/dashboard/DishGrid'
@@ -48,9 +49,12 @@ const router = createBrowserRouter(
       <Route path='payment_failed'element={<PaymentFailed/>} />
       <Route path='contact' element={<Contact/>}/>
       <Route path='bag' element={<Protect>
-        <Cart/>
-        </Protect>} />
-        <Route path='notifications' element={<Notification/>} />
+      <Cart/>
+      </Protect>} />
+      <Route path='profile' element={<Protect>
+      <UserProfile/>
+      </Protect>} />
+      <Route path='notifications' element={<Notification/>} />
     </Route>
     <Route path='dashboard' element={
       <ProtectAdmin level={1}>

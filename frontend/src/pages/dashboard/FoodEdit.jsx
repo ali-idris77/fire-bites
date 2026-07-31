@@ -26,11 +26,10 @@ export default function FoodEdit(){
         const fetchProfile = async ()=>{
             const res = await fetch(`${import.meta.env.VITE_API_URL}/api/dish/${id}`)
             const data = await res.json()
-            console.log(data)
             if(res.ok){
             SetName(data.name)
-            SetDiscPerc(data.discountedPercentage)
-            SetDiscPrice(data.discountedPrice)
+            SetDiscPerc(data.discountPercentage)
+            SetDiscPrice(data.discountPrice)
             SetPrice(data.price)
             SetCategory(data.category)
             setTag(data.tags)
@@ -55,9 +54,7 @@ export default function FoodEdit(){
         formdata.append('discountPercentage', discPerc)
         formdata.append('tag',JSON.stringify(tag))
         formdata.append('price', price)
-        console.log(body)
         for(const items of formdata.entries()){
-            console.log(items)
         }
         try{
          const res = await fetch(`${import.meta.env.VITE_API_URL}/api/dish/update/${id}`, {
@@ -101,7 +98,6 @@ export default function FoodEdit(){
                 <label htmlFor="">Dish Name</label>
                 <input type="text" placeholder="What's the dish called" value={name} onChange={(e)=>{
                     SetName(e.target.value)
-                    console.log(name)
                 }}/>
                 </div>
             <div className="form-action">
@@ -132,8 +128,6 @@ export default function FoodEdit(){
                                 checked={tag.includes(t)}
                                 onChange={(e)=>{
                                     handleTagChange(t)
-                                    console.log( e.target.value)
-                                    setTimeout(console.log(tag), 5000)
                                 }}/>
                                 <label htmlFor={`${t}-${index}`}>{t}</label>
                             </div>
@@ -145,15 +139,12 @@ export default function FoodEdit(){
                     <input type="checkbox" name="" id="" 
                     checked={disc}
                     onChange={(e)=>{
-                        console.log(e.target.checked)
                         SetDisc(e.target.checked)
                         if(!disc){
                             setTag([...tag, 'discount'])
                         }else{
-                            console.log('removin')
                             setTag(tag.filter(t => t !== 'discount'))
                         }
-                        console.log(tag)
                     }}
                     /><label htmlFor="">Enable Discount</label>
                 </div>

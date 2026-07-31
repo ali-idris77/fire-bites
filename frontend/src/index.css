@@ -1,10 +1,12 @@
 :root{
-  --background: #f0f0f0;
+  --background: #e6e6e6;
+  --primary: #f5f5f5;
   --text: #202020;
   --highlight: #b8b8b8;
   --drk-hgt:#c7c4c4;
   --accent: #eb2f00;
   --new:#37f8b8;
+  --newee:#37f8b856;
   --sep:#37cbf8;
   --err: #fa1616;
   --err-lte:#fa16165b;
@@ -48,6 +50,7 @@ header{
 }
 body{
   position: relative;
+  background: var(--background);
 }
 nav{
   display: flex;
@@ -262,7 +265,8 @@ section{
 /* logo style */
 .lgo{
   display: flex;
-  gap: 5px;
+  align-items: center;
+  gap: 2px;
 }
 .lgo h2{
   font-family: quicksand;
@@ -312,7 +316,7 @@ input, select, textarea{
   outline: none;
   min-height: 40px;
   width: 100%;
-  background: oklch(from var(--highlight) calc(l * 1.24) c h);
+  background: oklch(from var(--highlight) calc(l * 1.18) c h);
 }
 input:focus, select:focus, textarea:focus{
   border: 2px solid var(--highlight);
@@ -379,6 +383,10 @@ p.error{
   background: oklch(from var(--highlight) calc(l * 1.24) c h);
   color: var(--text);
   font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 400ms ease-out;
 }
 .locator-grid{
   display: grid;
@@ -392,6 +400,20 @@ p.error{
   border-radius: 15px;
   padding: 1rem;
   box-shadow: 2px 3px 4px oklch(from var(--highlight) calc(l * 1.1) c h);
+}
+.locator-card h3{
+  font-size: 1rem;
+  color: var(--accent);
+}
+.locator-card p{
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--highlight);
+}
+.locator-card{
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 .location-block + .location-block{
   margin-top: 1rem;
@@ -482,6 +504,9 @@ footer.site-footer{
   display:grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 1.5rem;
+}
+.dish-card, .skelCard, .rsvcard, .usr-card, .crtdv{
+background-color: var(--primary);
 }
 .dish-card, .dish-skel{
   border-radius: 10px;
@@ -777,6 +802,11 @@ section option:checked{
   padding: 0 5px;
   border-radius: 5px;
 }
+.rdtl-top{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
 .rdtl p, .tmdt p{
   font-weight: 700;
 }
@@ -789,11 +819,24 @@ section option:checked{
 .act button{
   background: var(--accent);
 }
-.pending{
+.statss{
+  display: inline-block;
+  border-radius: 5px;
+  padding: 0 5px;
+}
+.rsvcard:hover{
+  background-color: var(--blur);
+  transition: all 400ms ease-out;
+}
+.pending, .preparing{
   color: var(--warn);
   background: var(--warn-lte);
 }
-.completed{
+.confirmed, .paid{
+  color: var(--new);
+  background-color: var(--newee);
+}
+.completed, .finished{
   color: var(--sep);
   background: var(--splte);
 }
@@ -923,4 +966,89 @@ section option:checked{
   button{
     max-width: max-content;
   }
+}
+
+.ttller{
+  font-weight: 600;
+  font-size: larger;
+  padding: 0.3rem 0;
+  margin-bottom: 0.5rem ;
+  border-bottom: 2px solid var(--blur);
+  max-width: max-content;
+}
+.itm-card{
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  border: 1px solid var(--blur);
+  padding: 5px;
+  border-radius: 5px;
+}
+.itm-thmb{
+  overflow: hidden;
+  border-radius:10px;
+  border: 1px var(--blur) solid;
+  min-width: 90px;
+  height: 90px;
+  img{
+    width: 100%;
+    height: 100%;
+  }
+}
+.dtl{
+  width: calc(100% - 2rem);
+  text-align: left;
+  padding: 0 5px;
+  font-weight: 700;
+}
+.itm-card .dtl .udl{
+  display: flex;
+  justify-content: space-between;
+}
+
+.prd-spn{
+  display: inline-block;
+  font-size: small;
+  padding: 5px;
+}
+.prd-spn.active{
+  color: var(--accent);
+  background: var(--blur);
+  transition: all 400ms ease;
+}
+.butto{
+  border: 1px solid var(--blur);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+
+/* prf */
+.profile-info.usr{
+  margin: 10px auto;
+  padding: 10px 20px;
+  border: 1px solid var(--blur);
+  border-radius: 10px;
+  background: var(--primary);
+}
+.profile-tab.usr .modal{
+  max-width: max-content;
+  margin: 0 auto;
+  input{
+    background: var(--background);
+  }
+}
+
+@keyframes swell {
+  0%{
+    scale: 0.8;
+  }50%{
+    scale:2;
+  }100%{
+    scale: 1;
+  }
+}
+
+.swell{
+  animation: swell 1000ms ease-in-out infinite both;
 }

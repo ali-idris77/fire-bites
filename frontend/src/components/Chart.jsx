@@ -1,4 +1,4 @@
-import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Legend, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts"
+import { Area, AreaChart, Bar, BarChart, CartesianGrid, Cell, Legend, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis , YAxis  } from "recharts"
 
 
 export default function Chart({type='area', data=[], dataKey, xKey, color='#eb2f00', height=300}) {
@@ -9,8 +9,8 @@ export default function Chart({type='area', data=[], dataKey, xKey, color='#eb2f
             return(
                 <BarChart data={data} >
                     <CartesianGrid strokeDasharray="3 3" vertical={false}/>
-                    <XAxis dataKey={xKey}/>
-                    <YAxis/>
+                    <XAxis angle={-10} interval={0} textAnchor="center" tick={{fontSize: 11}} dataKey={xKey}/>
+                    <YAxis tick={{fontSize: 11}}/>
                     <Legend/>
                     <Tooltip/>
                     <Bar fill={color} dataKey={dataKey} radius={[5, 5, 0, 0]}/>
@@ -20,8 +20,8 @@ export default function Chart({type='area', data=[], dataKey, xKey, color='#eb2f
             return(
                 <LineChart data={data} >
                     <CartesianGrid strokeDasharray="3 3" vertical={false}/>
-                    <XAxis dataKey={xKey}/>
-                    <YAxis/>
+                    <XAxis interval={0} tick={{fontSize: 11}} dataKey={xKey}/>
+                    <YAxis tick={{fontSize: 11}}/>
                     <Legend/>
                     <Tooltip/>
                     <Line dataKey={dataKey} stroke={color} dot={false} strokeWidth={3} activeDot={{r:7}} type="monotone" />
@@ -63,8 +63,8 @@ export default function Chart({type='area', data=[], dataKey, xKey, color='#eb2f
             return(
                 <AreaChart data={data} >
                     <CartesianGrid strokeDasharray="3 3" vertical={false}/>
-                    <XAxis dataKey={xKey}/>
-                    <YAxis/>
+                    <XAxis interval={0} tick={{fontSize: 11}} dataKey={xKey}/>
+                    <YAxis tick={{fontSize: 11}}/>
                     <Legend/>
                     <Tooltip/>
                     <Area fill={color} fillOpacity={0.6} stroke={color} strokeWidth={3} dataKey={dataKey} />

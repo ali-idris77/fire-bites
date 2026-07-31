@@ -54,8 +54,7 @@ export default function Analytics() {
       const {today_rev,ttl_rev, week_rev, month_rev, ord_ttl, ord_chrt, ord_stats,
              ttl_cust, new_cust, ret_cust, tot_resev,best_dish,less_dish, resev_stat} = await res.json()
       if(res.ok){
-
-        setRevData({total:ttl_rev,today:today_rev, week:week_rev, month_rev})
+        setRevData({total:ttl_rev,today:today_rev, week:week_rev, month:month_rev})
         setOrderData({total:ord_ttl, group:ord_stats})
         setCustData({total:ttl_cust,new:new_cust,returnin:ret_cust})
         setResvData({total:tot_resev, group:resev_stat})
@@ -67,9 +66,9 @@ export default function Analytics() {
           const ocompleted = ord_stats.filter(r => r._id === 'completed')
           const ocancelled = ord_stats.filter(r => r._id === 'cancelled')
           const ords = {
-            pending: pending?.[0]?.sum || 0,
-            completed: ocompleted?.[0]?.sum || 0,
-            cancelled: ocancelled?.[0]?.sum || 0
+            pending: pending?.[0]?.total || 0,
+            completed: ocompleted?.[0]?.total || 0,
+            cancelled: ocancelled?.[0]?.total || 0
           }
           setOrderStats(ords)
         }
@@ -109,7 +108,7 @@ export default function Analytics() {
       }finally{
         setRevLoad(false)
       }
-    }, [])
+    }, [period])
   
   
   useEffect(()=>{    
@@ -131,7 +130,6 @@ export default function Analytics() {
       socket.off("analytics-update")
     }
   },[])
-  console.log(orderData, orderStats)
   return (
     <div className="wrapper">
       <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
@@ -224,7 +222,15 @@ export default function Analytics() {
         </div>
       </div>
       <div className="dash-card a15">
+        <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
         <h3>Revenue Over Time</h3>
+        <div className="butto"><span onClick={()=>{
+          setPeriod('daily')
+        }} className={`prd-spn ${period === 'daily' ? 'active' : ''}`}>Daily</span><span onClick={()=>{
+          setPeriod('weekly')
+        }} className={`prd-spn ${period === 'weekly' ? 'active' : ''}`}>Weekly</span><span onClick={()=>{
+          setPeriod('monthly')
+        }} className={`prd-spn ${period === 'monthly' ? 'active' : ''}`}>Monthly</span></div></div>
         <div className="content">
           {cntLoad ? <ChartSkeleton type="line"/> : <Chart type="area" data={revchart} xKey="label" dataKey="revenue" color="#2bb9f1" />}
         </div>
@@ -238,7 +244,7 @@ export default function Analytics() {
       <div className="dash-card a17">
         <h3>Orders By Status</h3>
         <div className="content"> 
-          {cntLoad ? <ChartSkeleton type="pie"/> : <Chart type="pie" data={orderData?.group} xKey="_id" dataKey="sum" />}
+          {cntLoad ? <ChartSkeleton type="pie"/> : <Chart type="pie" data={orderData?.group} xKey="_id" dataKey="total" />}
         </div>
       </div>
       <div className="dash-card a18">
@@ -250,7 +256,7 @@ export default function Analytics() {
       <div className="dash-card a19">
         <h3>Least Selling Dishes</h3>
         <div className="content">
-          {cntLoad ? <ChartSkeleton/> : <Chart type="bar" data={lschart} xKey="dish.name" dataKey="revenue" />}
+          {cntLoad ? <ChartSkeleton/> : <Chart type="bar" data={lschart} xKey="dish.name" dataKey="totalOrder" />}
         </div>
       </div>
       <div className="dash-card a20">

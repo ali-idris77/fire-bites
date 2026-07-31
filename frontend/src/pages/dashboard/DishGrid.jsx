@@ -58,7 +58,6 @@ export default function DishGrid() {
         headers:{'authorization':`Bearer ${admin.token}`}
       })
       const data = await res.json()
-      console.log(data)
       if(res.ok){
         dispatch({type:'DELETE_DISH', payload:data})
         setUpdl(false)
@@ -83,7 +82,6 @@ export default function DishGrid() {
         }}/>
       </div>
       <div className="filt" onChange={(e)=>{
-        console.log(e.target.value)
         if(e.target.value === "") setTag([])
         else setTag([e.target.value])
       }}>
@@ -94,10 +92,8 @@ export default function DishGrid() {
         </select>
         </div>
         <div className="filt" onChange={(e)=>{
-        console.log(e.target.value)
       }}>
         <select name="" id="" onChange={(e)=>{
-          console.log('ins', e.target.value)
           setCateg(e.target.value)
         }}>
           <option value="">All</option>

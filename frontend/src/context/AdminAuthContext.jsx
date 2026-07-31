@@ -16,7 +16,6 @@ const AdminAuthReducer = (state, action)=> {
     }
 }
 const initAdmin = JSON.parse(localStorage.getItem('admin'))
-console.log(initAdmin)
 const AdminAuthContextProvider = ({children}) => {
     const [state, dispatch] = useReducer(AdminAuthReducer, {
         admin:initAdmin
@@ -36,10 +35,12 @@ const AdminAuthContextProvider = ({children}) => {
     }, [])
     useEffect(()=>{
         if(admin){
+            let rl = admin.level >= 4 ? 'mgt' : 'admin';
             dispatch({type:'LOGIN', payload:admin})
              socket.emit("join-room", {
                 email:admin.user,
-                role:'admin'
+                role:rl,
+
         })
         }
     },[])

@@ -4,14 +4,12 @@ const dish = require('../models/dish')
 module.exports.cart_create = async (req, res)=>{
     const customer =req.user.id
     const {dishId, quantity} = req.body
-    console.log(req.body)
     try{
         //validate dish exists
         const prod = await dish.findById(dishId)
         if(!prod) return res.status(404).json({msg: "dish not found"})
         //find user's cart 
         let cart = await Cart.findOne({customer})
-        console.log('cart',cart)
         if(!cart){
             //if no cart create one
             cart = new Cart({
@@ -72,7 +70,7 @@ module.exports.update_Cart = async (req, res)=>{
 module.exports.delete_Cart = async (req, res)=>{
     const customer = req.user._id
     const {dishId} = req.body
-    console.log(req.body)
+    (req.body)
     try{
         const cart = await Cart.findOne({customer})
         if(!cart) return res.status(404).json({msg: "Cart not found"})
@@ -84,11 +82,9 @@ module.exports.delete_Cart = async (req, res)=>{
     }
 }
 module.exports.clear_cart = async(req, res)=>{
-    console.log('clearing...')
     const customer = req.user._id
     try{
         const clear = await Cart.findOneAndUpdate({customer} , {$set: {items: []}})
-        console.log('done', clear)
         res.json(clear)
     }catch(err){
         res.json({err})

@@ -61,6 +61,8 @@ const post_reservation = async(req, res)=>{
         const reservation = await Reservation.create(dbody)
         io.to("admin").emit("reserve-create", reservation)
         io.to("admin").emit("analytics-update", reservation)
+        io.to("mgt").emit("order-create", order)
+        io.to("mgt").emit("analytics-update", order)
         res.status(200).json(reservation)
     }catch(errs){
         console.log(errs.message)
@@ -77,6 +79,7 @@ const patch_reservation = async(req, res)=>{
         const reservation = await Reservation.findByIdAndUpdate(id, {$set:update}, {returnDocument: 'after'})
         io.to(reservation.email).emit("reserve-update", reservation)
         io.to("admin").emit("analytics-update", reservation)
+        io.to("mgt").emit("analytics-update", reservation)
         sendEmail({
             to: reservation.email,
             subject: 'Reservation Update',

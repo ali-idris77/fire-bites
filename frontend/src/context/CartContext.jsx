@@ -49,7 +49,6 @@ const CartContextProvider = ({children})=>{
             dispatch({type:'SET_CART', payload:data?.[0]?.items ?? []})
             setCartLoading(false)
         }else{
-            console.log(data)
             setCartLoading(false)
         }
     }catch(err){
@@ -61,7 +60,6 @@ const CartContextProvider = ({children})=>{
             fetchCart()
         }
     },[])
-    console.log('st', state)
     return (
         <cartContext.Provider value={{...state ,dispatch ,cartLoading}}>
             {children}

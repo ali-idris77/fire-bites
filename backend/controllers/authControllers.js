@@ -14,7 +14,6 @@ const createToken = (id)=>{
 //signup logic
 const signup = async (req, res)=>{
     const io = getIo()
-    console.log(req.body)
     const {email, password,fullname,level,phone} = req.body;
     try{
         const user = await User.signup(email, password,fullname,level,phone);
@@ -96,18 +95,15 @@ const customr_login = async (req, res)=>{
 //google auth
 const google_auth = async (req, res)=>{
 const client = new OAuth2Client( process.env.GOOGLE_CLIENT_ID)
-        console.log('bfr')
         try{
         const ticket = await client.verifyIdToken({
         idToken: req.body.token,
         audience: process.env.GOOGLE_CLIENT_ID
         });
-        console.log('aftr')
         const payload = ticket.getPayload()
         let user = await Customer.findOne({
             email: payload.email
         })
-        console.log('ftrr')
         if(!user){
             user = await Customer.create({
                 email: payload.email,

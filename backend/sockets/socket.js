@@ -10,12 +10,9 @@ module.exports.initIo = (server) =>{
     })
 
     io.on("connection", (socket)=>{
-        console.log("User connected", socket.id)
         socket.on("join-room", ({email, role})=>{
             socket.join(email)
             socket.join(role)
-
-            console.log(`${socket.id} joined: ${email} or ${role}`)
         })
         socket.on("disconnect", ()=>{
             console.log("User disconnected", socket.id)

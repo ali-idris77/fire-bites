@@ -18,7 +18,6 @@ export default function Reservation() {
     
     
   const updResrv = async (id, upd)=>{
-    console.log(upd)
     setUpdl(true)
     try{
     const res = await fetch(`${import.meta.env.VITE_API_URL}/api/reserve/update/${id}`,{
@@ -76,7 +75,6 @@ export default function Reservation() {
                         <button
                         disabled={r.status === 'completed' || r.status === 'rejected' || r.status === 'no-show'}
                         onClick={()=>{
-                        console.log(r._id)
                         const id = r._id 
                         updResrv(id)
                       }}>cancel reservation</button>
