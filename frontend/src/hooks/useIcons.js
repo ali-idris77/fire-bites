@@ -9,8 +9,6 @@ import {BiLogoTwitter, BiLogoInstagram,
     BiSlider,
     BiSliderAlt,
     BiBox,
-    BiLogoInstagram,
-    BiLogoTwitter,
     BiLogoFacebook
 } from 'react-icons/bi'
 import {HiUserGroup, HiUser, HiUsers} from 'react-icons/hi'
