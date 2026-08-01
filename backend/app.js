@@ -5,10 +5,14 @@ const {Server} = require('socket.io')
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const cors = require('cors')
+const helmet = require('helmet');
 dotenv.config();
 //declaring important variables
 const app = express();
 const server = createServer(app)
+
+app.use(helmet())
+
 //importing middlewares
 const {initIo} = require('./sockets/socket')
 //importing routes

@@ -29,6 +29,8 @@ import FoodEdit from './pages/dashboard/FoodEdit'
 import DishGrid from './pages/dashboard/DishGrid'
 import UserGrid from './pages/dashboard/UserGrid'
 import PaymentFailed from './pages/PaymentFailed'
+import NotFound from './pages/NotFound'
+
 import { useEffect } from 'react'
 import { socket } from './sockets/socket'
 
@@ -110,6 +112,7 @@ const router = createBrowserRouter(
 } 
         />
     </Route>
+    <Route path='*' element={<NotFound/>}/>
     </>
   )
 )
