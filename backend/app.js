@@ -11,7 +11,11 @@ dotenv.config();
 const app = express();
 const server = createServer(app)
 
-app.use(helmet())
+app.use(
+  helmet({
+    crossOriginResourcePolicy: false
+  })
+);
 
 //importing middlewares
 const {initIo} = require('./sockets/socket')
