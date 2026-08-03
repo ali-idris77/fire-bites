@@ -61,11 +61,11 @@ const post_reservation = async(req, res)=>{
         const reservation = await Reservation.create(dbody)
         io.to("admin").emit("reserve-create", reservation)
         io.to("admin").emit("analytics-update", reservation)
-        io.to("mgt").emit("order-create", order)
-        io.to("mgt").emit("analytics-update", order)
+        io.to("mgt").emit("order-create", reservation)
+        io.to("mgt").emit("analytics-update", reservation)
         res.status(200).json(reservation)
     }catch(errs){
-        console.log(errs.message)
+        console.log(errs, errs.message)
         res.status(400).json({err:"Unable to create Reservation. Try again later.", error:error.message});
     }
 }

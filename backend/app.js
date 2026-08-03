@@ -61,8 +61,8 @@ initIo(server)
 //start server here
 mongoose.connect(process.env.MONGODB_URI)
 .then((res) => {
-console.log(process.env.MONGODB_URI.split("/").pop().split("?")[0]);
-    server.listen( process.env.PORT, ()=>{
+
+  server.listen( process.env.PORT, ()=>{
         console.log('listening at port 4000');
     });
 }).catch(err =>{

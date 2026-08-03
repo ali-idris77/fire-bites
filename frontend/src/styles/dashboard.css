@@ -690,6 +690,11 @@ td, th{
   }
   
 }
+@media (max-width:515px) {
+  .usr-card .info.t2{
+    display: none;
+  }
+}
 @media (max-width: 450px) {
   .cart-div, .rsvdiv, .dishes{
     display: flex !important;
@@ -704,10 +709,21 @@ td, th{
   .crtdv .name{
     font-size: medium;
   }
-  .usr-card .info.t2{
-    display: none;
-  }
+  
   .usr-card .action .view{
   display: flex;
 }
+.usr-card .action{
+  gap: 0.5rem;
+}
+}
+@media (max-width: 390px) {
+  .usr-card .action{
+  gap: 0.5rem;
+  flex-direction: column;
+}
+.inact button{
+  display: flex;
+    justify-content: center;
+  }
 }

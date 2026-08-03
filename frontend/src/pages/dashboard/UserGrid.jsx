@@ -395,7 +395,7 @@ export default function UserGrid() {
       {
         load ? Array.from({length: 5}).map((_, i)=>{
                 return(
-                  <div className="skelCard">
+                  <div className="skelCard" key={i}>
                 <Skeleton height="1.5rem" width="50%"/>
                 <Skeleton width="25%"/>
                 <Skeleton width="50%"/>
@@ -451,7 +451,7 @@ export default function UserGrid() {
       {
         load ? Array.from({length: 5}).map((_, i)=>{
                 return(
-                  <div className="skelCard">
+                  <div className="skelCard" key={i}>
                 <Skeleton height="1.5rem" width="50%"/>
                 <Skeleton width="25%"/>
                 <Skeleton width="50%"/>

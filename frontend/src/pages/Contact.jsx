@@ -32,7 +32,8 @@ export default function Contact() {
   const handleSubmit = async ()=>{
     setLoad(true)
     const reservationDate = new Date(`${date}T${time}`)
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/reserve/create`,{
+    try{
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/reserve/create`,{
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
@@ -61,6 +62,14 @@ export default function Contact() {
     setDate('')
     setTime('')
     setSprq('')
+  }catch(err){
+      setLoad(false)
+      Swal.fire({
+        title:'Reservation Request Failed',
+        icon:'error',
+        text:'Something went wrong, try again later.'
+      })
+  }
   }
 
   return (
@@ -89,7 +98,7 @@ export default function Contact() {
         <div className="locator-card">
           {locations.map((location) => (
             <div key={location.name} className="location-block">
-              <h3>{location.name}</h3>
+              <h2>{location.name}</h2>
               <p>{location.address}</p>
               <p>{location.phone}</p>
               <p>{location.email}</p>

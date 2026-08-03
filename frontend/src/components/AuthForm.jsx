@@ -36,7 +36,6 @@ export default function AuthForm({endpoint, fr='customer', type='login'}) {
                 localStorage.setItem('user', JSON.stringify(data))}
                 setFetching(false)
                 setError(null)
-                (data)
                 if(!data.isStaff){
                     navigate('/menu')
                 }else{

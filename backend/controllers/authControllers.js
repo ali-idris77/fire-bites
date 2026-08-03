@@ -20,6 +20,8 @@ const signup = async (req, res)=>{
         const token = createToken( user.id);
         io.to("admin").emit("analytics-update", user)
         io.to("admin").emit("new-user", user)
+        io.to("mgt").emit("analytics-update", user)
+        io.to("mgt").emit("new-user", user)
         res.status(200).json({user: user.email, isStaff:true, level: user.level, token});
     }catch(err){
         res.status(400).json({error: err.message});

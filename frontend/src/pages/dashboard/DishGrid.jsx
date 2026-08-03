@@ -112,7 +112,7 @@ export default function DishGrid() {
     <section className="dishes">
       { dishLoading ? Array.from({length:12}).map((_, i)=>{
         return (
-          <div className="skelcrd">
+          <div className="skelcrd" key={i}>
             <div className="thumb">
               <Skeleton width="100%" height="100%" radius="0" />
             </div>

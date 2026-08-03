@@ -408,9 +408,9 @@ p.error{
   color: var(--accent);
 }
 .locator-card p{
-  font-size: 0.75rem;
+  font-size: 1.2rem;
   font-weight: 600;
-  color: var(--highlight);
+  color: var(--accent);
 }
 .locator-card{
   display: flex;
@@ -422,6 +422,11 @@ p.error{
   padding-top: 1rem;
   border-top: 1px solid var(--highlight);
 }
+.location-block {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+ }
 .map-card iframe{
   width: 100%;
   min-height: 280px;

@@ -134,7 +134,7 @@ export default function Reservation() {
 
       {load ? Array.from({length: 12}).map((_, i)=>{
         return(
-          <div className="skelCard">
+          <div className="skelCard" key={i}>
         <Skeleton height="1.5rem" width="50%"/>
         <Skeleton width="25%"/>
         <Skeleton width="50%"/>
