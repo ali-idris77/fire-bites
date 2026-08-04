@@ -96,6 +96,7 @@ export default function Orders() {
             `
           })}
           <div class='lft'>
+            <p>Ordered By: ${o.customerEmail}</p>
             <p>Payment status: ${o.payment.status}</p>
             <p>order status: ${o.status}</p>
             <p>${formatDistanceToNow(new Date(o.createdAt), {addSuffix:true})}</p>
@@ -149,16 +150,11 @@ export default function Orders() {
           {filteredOrders && filteredOrders.length > 0 ? filteredOrders.map(r =>{
                       return (
                           <div className="rsvcard" key={r._id} >
-                              <div className="rdtl-top">
-                                 <Icon name='box' className="icn" size='50' />
                               <div className="rdtl">
                                 <h3>Order - {r._id.slice(0,10)}</h3>
-                                <p>By: {r.customerEmail}</p>
                                 <p>{r.items.length} items</p>
                                 <p>Amount: ₦{r.amount}</p>
                           </div>
-                          </div>
-                          
                           <div className="date dated">
                             <p><strong>Payment status:</strong> <span className={`statss ${r.payment.status}`}>{r.payment.status}</span></p>
                             <p><strong>status:</strong> <span className={`statss ${r.status}`}>{r.status}</span></p>

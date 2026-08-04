@@ -554,9 +554,9 @@ module.exports.busy_hrs = async (req, res)=>{
                     _id: 0,
                     label: {
                         $concat: [
-                            {$toString:"_id.day"},
+                            {$toString:"$_id.day"},
                             " ",
-                            {$toString:"_id.hour"},
+                            {$toString:"$_id.hour"},
                             ":00"
                         ]
                     },

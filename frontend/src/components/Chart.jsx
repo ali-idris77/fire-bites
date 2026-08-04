@@ -67,7 +67,7 @@ export default function Chart({type='area', data=[], dataKey, xKey, color='#eb2f
                     <YAxis tick={{fontSize: 11}}/>
                     <Legend/>
                     <Tooltip/>
-                    <Area fill={color} fillOpacity={0.6} stroke={color} strokeWidth={3} dataKey={dataKey} />
+                    <Area fill={color} fillOpacity={0.6} stroke={color} strokeWidth={3} dataKey={dataKey} type="monotone" />
                 </AreaChart>
             )
             

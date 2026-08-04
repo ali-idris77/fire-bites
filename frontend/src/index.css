@@ -199,6 +199,7 @@ button{
   color: var(--highlight);
   transition: all 400ms ease-out;
   background: var(--accent);
+  white-space: nowrap;
 }
 button:hover{
   scale: 1.05;
@@ -1023,11 +1024,17 @@ section option:checked{
   color: var(--accent);
   background: var(--blur);
   transition: all 400ms ease;
+  h2{
+    color:var(--accent);
+  }
 }
 .butto{
   border: 1px solid var(--blur);
   border-radius: 20px;
   overflow: hidden;
+}
+.butto.tod{
+  display: none;
 }
 
 
