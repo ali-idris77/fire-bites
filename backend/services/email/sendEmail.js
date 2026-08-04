@@ -10,7 +10,9 @@ const transporter = nodemailer.createTransport({
         pass: process.env.SMTP_PASSWORD
     }
 })
-
+transporter.verify((err, success) => {
+    console.log(err || success);
+});
 const sendEmail = async ({to, subject, html})=>{
 console.log('sending email')
     try{
