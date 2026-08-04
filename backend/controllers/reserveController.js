@@ -74,12 +74,13 @@ const post_reservation = async(req, res)=>{
 const patch_reservation = async(req, res)=>{
     const io = getIo()
     const update = req.body
-    const id = req.params.id
+    const id = req.params.id 
     try{
         const reservation = await Reservation.findByIdAndUpdate(id, {$set:update}, {returnDocument: 'after'})
         io.to(reservation.email).emit("reserve-update", reservation)
         io.to("admin").emit("analytics-update", reservation)
         io.to("mgt").emit("analytics-update", reservation)
+        console.log('yoyo')
         sendEmail({
             to: reservation.email,
             subject: 'Reservation Update',

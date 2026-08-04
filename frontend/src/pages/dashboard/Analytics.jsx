@@ -230,14 +230,14 @@ export default function Analytics() {
           setPeriod('weekly')
         }} className={`prd-spn ${period === 'weekly' ? 'active' : ''}`}>Weekly</span><span onClick={()=>{
           setPeriod('monthly')
-        }} className={`prd-spn ${period === 'monthly' ? 'active' : ''}`}>Monthly</span></div></div>
+        }} className={`prd-spn ${period === 'monthly' ? 'active' : ''}`}>Monthly</span></div>
       <div className="butto tod"><span onClick={()=>{
           setPeriod('daily')
         }} className={`prd-spn ${period === 'daily' ? 'active' : ''}`}><h2>D</h2></span><span onClick={()=>{
           setPeriod('weekly')
         }} className={`prd-spn ${period === 'weekly' ? 'active' : ''}`}><h2>W</h2></span><span onClick={()=>{
           setPeriod('monthly')
-        }} className={`prd-spn ${period === 'monthly' ? 'active' : ''}`}><h2>M</h2></span></div>
+        }} className={`prd-spn ${period === 'monthly' ? 'active' : ''}`}><h2>M</h2></span></div></div>
         <div className="content">
           {cntLoad ? <ChartSkeleton type="line"/> : <Chart type="area" data={revchart} xKey="label" dataKey="revenue" color="#2bb9f1" />}
         </div>

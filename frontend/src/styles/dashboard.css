@@ -704,6 +704,13 @@ td, th{
   .lft{
     display: flex;
   }
+  .butto{
+    display:none;
+  }
+  .butto.tod{
+    display:inline-block;
+    width:max-content;
+  }
 }
 @media (max-width:515px) {
   .usr-card .info.t2{
