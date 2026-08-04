@@ -15,6 +15,9 @@ transporter.verify((err, success) => {
 });
 const sendEmail = async ({to, subject, html})=>{
 console.log('sending email')
+console.log(process.env.SMTP_HOST);
+console.log(process.env.SMTP_PORT);
+console.log(process.env.SMTP_USER);
     try{
     await transporter.sendMail({
         from: process.env.SMTP_FROM,
