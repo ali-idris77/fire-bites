@@ -97,7 +97,7 @@ module.exports.overview_values = async (req, res)=>{
                 $sum:"$items.quantity"
             },
             revenue:{
-                $sum:"$items.amount"
+                $sum:"$amount"
             },
             totalOrder:{
                 $sum:1
@@ -331,7 +331,7 @@ module.exports.analytics_values = async (req, res)=>{
                 $sum:"$items.quantity"
             },
             revenue:{
-                $sum:"$items.amount"
+                $sum:"$amount"
             },
             totalOrder:{
                 $sum:1
@@ -383,7 +383,7 @@ module.exports.analytics_values = async (req, res)=>{
                 $sum:"$items.quantity"
             },
             revenue:{
-                $sum:"$items.amount"
+                $sum:"$amount"
             },
             totalOrder:{
                 $sum:1
@@ -761,7 +761,7 @@ module.exports.download_report = async (req, res) => {
                 $sum:"$items.quantity"
             },
             revenue:{
-                $sum:"$items.amount"
+                $sum:"$amount"
             },
             totalOrder:{
                 $sum:1
@@ -797,7 +797,69 @@ module.exports.download_report = async (req, res) => {
                 "dish.name": 1,
             }
         }  
-        ])
+        ]),
+    Order.aggregate([
+      {
+        $match:{
+            status:"completed"
+        }
+    },{
+        $unwind:"$items"
+    },
+        {
+            $group:{
+            _id:"$items.dish",
+            unitSold:{
+                $sum:"$items.quantity"
+            },
+            revenue:{
+                $sum:"$amount"
+            },
+            totalOrder:{
+                $sum:1
+            }
+        }
+    },
+        {
+            $sort:{
+            unitSold: 1
+        }
+      },
+      {
+        $limit:3
+      },
+      {
+        $lookup:{
+            from: "dishes",
+            localField: "_id",
+            foreignField: "_id",
+            as: "dish"
+        }
+      },{
+        $unwind: "$dish"
+      },
+      {
+        $project: {
+            _id:0,
+            unitSold:1,
+            revenue: 1,
+            totalOrder: 1,
+
+            "dish._id": 1,
+            "dish.name": 1,
+        }
+    }  
+    ]),
+     Reservation.aggregate([
+        {
+            $group:{
+                _id:"$status",
+                sum:{
+                    $sum:1
+                }
+            }
+        }
+    ])
         ])
 
         // stream PDF back to client

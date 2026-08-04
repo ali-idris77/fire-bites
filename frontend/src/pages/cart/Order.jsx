@@ -112,7 +112,7 @@ export default function Order() {
                 <div className="date">
                   <p><strong>Payment status:</strong> <span className={`statss ${r.payment.status}`}>{r.payment.status}</span></p>
                   <p><strong>status:</strong> <span className={`statss ${r.status}`}>{r.status}</span></p>
-                  {formatDistanceToNow(r.createdAt)}
+                  {formatDistanceToNow(new Date(r.createdAt), {addSuffix:true})}
                 </div>
                 </div>
             )

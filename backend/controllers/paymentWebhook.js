@@ -8,7 +8,6 @@ const sendEmail = require('../services/email/sendEmail')
 const orderReceipt = require('../services/email/templates/orderReceipt')
 
 const paymentWebhook = async (req, res)=>{
-    ('webhook reached')
     const hash = crypto.createHmac(
         'sha512',
         process.env.PAYSTACK_SECRET_KEY
@@ -22,23 +21,20 @@ const paymentWebhook = async (req, res)=>{
     const event = JSON.parse(req.body.toString())
     if(event.event === 'charge.success'){
         const reference = event.data.reference
-        const order = await Order.findOne({"payment.reference":reference})
-
+        const order = await Order.findOne({"payment.reference":reference})  
         if(!order){
             return res.sendStatus(404)
         }
-
         order.payment.status = 'paid'
         order.status = 'preparing'
         order.payment.paidAt = new Date()
         await order.save()
 
-        await Cart.findOneAndUpdate({customer: order.customer} , {$set: {items: []}})
-        
         const io = getIo()
         const notification = await Notification.create({title:'Order Payment', type:'order', message:'Order has been made and paid for', meantFor:"admin", reason:order._id})
         io.to("admin").emit("notification", notification)
         io.to("mgt").emit("notification", notification)
+        console.log('emailing receipt to: ', order.customerEmail)
         sendEmail({
             to: order.customerEmail,
             subject: 'Order Payment',

@@ -46,7 +46,6 @@ export default function Reservation() {
     const data = await res.json()
     if(res.ok){
       const newResev = resev.map(r => r._id === data._id ? data : r)
-      (newResev)
       setResev(newResev)
       setUpdl(false)
       succtoast('Status changed successfully')

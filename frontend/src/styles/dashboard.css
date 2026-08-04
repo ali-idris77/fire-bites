@@ -688,7 +688,22 @@ td, th{
   .rdtl h3{
     max-width: 200px;
   }
-  
+  button:hover{
+    scale: 1;
+    filter: brightness(1);
+  }
+  .rsvcard:hover{
+    background: var(--primary);
+  }
+  .dish-card:hover{
+    scale: 1;
+  }
+  .rsvcard .dated{
+    display: none;
+  }
+  .lft{
+    display: flex;
+  }
 }
 @media (max-width:515px) {
   .usr-card .info.t2{
@@ -716,6 +731,13 @@ td, th{
 .usr-card .action{
   gap: 0.5rem;
 }
+.rdtl-top .icn{
+  display: none;
+}
+/* extras */
+div:where(.swal2-container) div:where(.swal2-html-container){
+  min-height: 200px !important;
+}
 }
 @media (max-width: 390px) {
   .usr-card .action{
@@ -726,4 +748,5 @@ td, th{
   display: flex;
     justify-content: center;
   }
+
 }

@@ -5,7 +5,7 @@ const User = require('../models/user')
 
 module.exports.getUsers = async (req, res) =>{
     const customers = await Customer.find().select('-password').sort({createdAt:-1})
-    const staffs = await User.find().select('-password').sort({createdAt:-1})
+    const staffs = await User.find({level: {$lte:4}}).select('-password').sort({createdAt:-1})
 
     res.status(200).json({customers, staffs})
     

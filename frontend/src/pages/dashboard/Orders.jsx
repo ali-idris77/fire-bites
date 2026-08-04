@@ -92,8 +92,14 @@ export default function Orders() {
               <p>Quantity: ${i.quantity}</p>
             </div>
             </div>
-            </div>`
+            </div>
+            `
           })}
+          <div class='lft'>
+            <p>Payment status: ${o.payment.status}</p>
+            <p>order status: ${o.status}</p>
+            <p>${formatDistanceToNow(new Date(o.createdAt), {addSuffix:true})}</p>
+            </div>
           </div>
           `
         })
@@ -144,18 +150,19 @@ export default function Orders() {
                       return (
                           <div className="rsvcard" key={r._id} >
                               <div className="rdtl-top">
-                                 <Icon name='box' size='50' />
+                                 <Icon name='box' className="icn" size='50' />
                               <div className="rdtl">
                                 <h3>Order - {r._id.slice(0,10)}</h3>
+                                <p>By: {r.customerEmail}</p>
                                 <p>{r.items.length} items</p>
                                 <p>Amount: ₦{r.amount}</p>
                           </div>
                           </div>
                           
-                          <div className="date">
+                          <div className="date dated">
                             <p><strong>Payment status:</strong> <span className={`statss ${r.payment.status}`}>{r.payment.status}</span></p>
                             <p><strong>status:</strong> <span className={`statss ${r.status}`}>{r.status}</span></p>
-                            {formatDistanceToNow(r.createdAt)}
+                            {formatDistanceToNow(new Date(r.createdAt), {addSuffix:true})}
                           </div>
                            <div className="act">
                       <button onClick={()=>{

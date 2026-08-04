@@ -87,6 +87,7 @@ const patch_reservation = async(req, res)=>{
         })
          res.status(200).json(reservation)
     }catch(error){
+        console.log(err)
         res.status(400).json({error:error.message, err:"Coldn't update Reservation"})
     }
 }

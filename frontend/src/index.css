@@ -804,6 +804,7 @@ section option:checked{
   display: grid;
   place-content: center;
   color: var(--accent);
+  z-index: 99999;
 }
 .rsvcard .sts, .sts{
   padding: 0 5px;
@@ -1058,4 +1059,10 @@ section option:checked{
 
 .swell{
   animation: swell 1000ms ease-in-out infinite both;
+}
+
+.lft{
+  display: none;
+  flex-direction: column;
+  align-items: flex-start;
 }
